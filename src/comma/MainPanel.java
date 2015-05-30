@@ -10,6 +10,9 @@ import java.awt.event.KeyEvent;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -33,6 +36,13 @@ public class MainPanel extends JFrame {
 	public String[] storeLabelStrings = { "브랜드명", "매장명", "지역", "세부지역", "메뉴분야", "분위기" };
 
 	private JPanel mPanel = null;
+	
+	public JTextField[] menuUpdateTextBefore= new JTextField[4];
+	public JTextField[] menuUpdateTextAfter= new JTextField[4];
+	public JTextField[] personUpdateTextBefore= new JTextField[4];
+	public JTextField[] personUpdateTextAfter= new JTextField[4];
+	public JTextField[] storeUpdateTextBefore= new JTextField[4];
+	public JTextField[] storeUpdateTextAfter= new JTextField[4];
 	
 	private Vector<String> serachPersonColumn= null;
 	private DefaultTableModel searchPersonTableModel= null; 
@@ -311,9 +321,9 @@ public class MainPanel extends JFrame {
 		panel.setLayout(new GridLayout(1, 1));
 
 		JTabbedPane mCondPane = new JTabbedPane();
-		JComponent panel1 = makeTextPanel("Menu");
-		JComponent panel2 = makeTextPanel("Person");
-		JComponent panel3 = makeTextPanel("Store");
+		JComponent panel1 = makeMenuUpdatePanel();
+		JComponent panel2 = makePersonUpdatePanel();
+		JComponent panel3 = makeStoreUpdatePanel();
 
 		mCondPane.addTab("Menu", null, panel1, "search for menu");
 		mCondPane.addTab("Person", null, panel2, "search for person");
@@ -322,7 +332,184 @@ public class MainPanel extends JFrame {
 		panel.add(mCondPane);
 		return panel;
 	}
-
+	
+	private JComponent makeMenuUpdatePanel(){
+		JPanel panel = new JPanel(false);
+		panel.setLayout(new GridLayout(2, 1, 10, 0));
+		
+		JPanel inner1= new JPanel(new SpringLayout());
+		inner1.setBorder(BorderFactory.createTitledBorder("Before"));
+		JComponent[] panelRightComponent1 = new JComponent[menuLabelStrings.length];
+		JComponent[] panelLeftComponent1= new JComponent[menuLabelStrings.length];
+		int fieldNumber = 0;
+		panelRightComponent1[fieldNumber] = new JTextField();
+		((JTextField) panelRightComponent1[fieldNumber++]).setColumns(20);
+		panelRightComponent1[fieldNumber] = new JTextField();
+		((JTextField) panelRightComponent1[fieldNumber++]).setColumns(20);
+		panelRightComponent1[fieldNumber] = new JTextField();
+		((JTextField) panelRightComponent1[fieldNumber++]).setColumns(20);
+		panelRightComponent1[fieldNumber] = new JTextField();
+		for (int i = 0; i < menuLabelStrings.length; i++) {
+			panelLeftComponent1[i] = new JLabel(menuLabelStrings[i], JLabel.TRAILING);
+			((JLabel)panelLeftComponent1[i]).setLabelFor(panelRightComponent1[i]);
+			inner1.add(panelLeftComponent1[i]);
+			inner1.add(panelRightComponent1[i]);
+		}
+		inner1.add(new JLabel());
+		inner1.add(new JLabel());
+		makeCompactGrid(inner1, menuLabelStrings.length+1, 2, GAP, GAP, GAP, GAP);
+		
+		JPanel inner2= new JPanel(new SpringLayout());
+		inner2.setBorder(BorderFactory.createTitledBorder("After"));
+		JComponent[] panelRightComponent2 = new JComponent[menuLabelStrings.length];
+		JComponent[] panelLeftComponent2= new JComponent[menuLabelStrings.length];
+		fieldNumber = 0;
+		panelRightComponent2[fieldNumber] = new JTextField();
+		((JTextField) panelRightComponent2[fieldNumber++]).setColumns(20);
+		panelRightComponent2[fieldNumber] = new JTextField();
+		((JTextField) panelRightComponent2[fieldNumber++]).setColumns(20);
+		panelRightComponent2[fieldNumber] = new JTextField();
+		((JTextField) panelRightComponent2[fieldNumber++]).setColumns(20);
+		panelRightComponent2[fieldNumber] = new JTextField();
+		for (int i = 0; i < menuLabelStrings.length; i++) {
+			panelLeftComponent2[i] = new JLabel(menuLabelStrings[i], JLabel.TRAILING);
+			((JLabel)panelLeftComponent2[i]).setLabelFor(panelRightComponent2[i]);
+			inner2.add(panelLeftComponent2[i]);
+			inner2.add(panelRightComponent2[i]);
+		}
+		JButton button= new JButton("Insert");
+		inner2.add(button);
+		button= new JButton("Delete");
+		inner2.add(button);
+		makeCompactGrid(inner2, menuLabelStrings.length+1, 2, GAP, GAP, GAP, GAP);
+		
+		panel.add(inner1);
+		panel.add(inner2);
+		return panel;
+	}
+	private JComponent makePersonUpdatePanel(){
+		JPanel panel = new JPanel(false);
+		panel.setLayout(new GridLayout(2, 1, 10, 0));
+		
+		JPanel inner1= new JPanel(new SpringLayout());
+		inner1.setBorder(BorderFactory.createTitledBorder("Before"));
+		JComponent[] panelRightComponent1 = new JComponent[personLabelStrings.length];
+		JComponent[] panelLeftComponent1= new JComponent[personLabelStrings.length];
+		int fieldNumber = 0;
+		panelRightComponent1[fieldNumber] = new JTextField();
+		((JTextField) panelRightComponent1[fieldNumber++]).setColumns(20);
+		panelRightComponent1[fieldNumber] = new JTextField();
+		((JTextField) panelRightComponent1[fieldNumber++]).setColumns(20);
+		panelRightComponent1[fieldNumber] = new JTextField();
+		((JTextField) panelRightComponent1[fieldNumber++]).setColumns(20);
+		panelRightComponent1[fieldNumber] = new JTextField();
+		((JTextField) panelRightComponent1[fieldNumber++]).setColumns(20);
+		panelRightComponent1[fieldNumber] = new JTextField();
+//		((JTextField) panelRightComponent1[fieldNumber++]).setColumns(20);
+		for (int i = 0; i < personLabelStrings.length; i++) {
+			panelLeftComponent1[i] = new JLabel(personLabelStrings[i], JLabel.TRAILING);
+			((JLabel)panelLeftComponent1[i]).setLabelFor(panelRightComponent1[i]);
+			inner1.add(panelLeftComponent1[i]);
+			inner1.add(panelRightComponent1[i]);
+		}
+		inner1.add(new JLabel());
+		inner1.add(new JLabel());
+		makeCompactGrid(inner1, personLabelStrings.length+1, 2, GAP, GAP, GAP, GAP);
+		
+		JPanel inner2= new JPanel(new SpringLayout());
+		inner2.setBorder(BorderFactory.createTitledBorder("After"));
+		JComponent[] panelRightComponent2 = new JComponent[personLabelStrings.length];
+		JComponent[] panelLeftComponent2= new JComponent[personLabelStrings.length];
+		fieldNumber = 0;
+		panelRightComponent2[fieldNumber] = new JTextField();
+		((JTextField) panelRightComponent2[fieldNumber++]).setColumns(20);
+		panelRightComponent2[fieldNumber] = new JTextField();
+		((JTextField) panelRightComponent2[fieldNumber++]).setColumns(20);
+		panelRightComponent2[fieldNumber] = new JTextField();
+		((JTextField) panelRightComponent2[fieldNumber++]).setColumns(20);
+		panelRightComponent2[fieldNumber] = new JTextField();
+		((JTextField) panelRightComponent2[fieldNumber++]).setColumns(20);
+		panelRightComponent2[fieldNumber] = new JTextField();
+//		((JTextField) panelRightComponent2[fieldNumber++]).setColumns(20);
+		for (int i = 0; i < personLabelStrings.length; i++) {
+			panelLeftComponent2[i] = new JLabel(personLabelStrings[i], JLabel.TRAILING);
+			((JLabel)panelLeftComponent2[i]).setLabelFor(panelRightComponent2[i]);
+			inner2.add(panelLeftComponent2[i]);
+			inner2.add(panelRightComponent2[i]);
+		}
+		JButton button= new JButton("Insert");
+		inner2.add(button);
+		button= new JButton("Delete");
+		inner2.add(button);
+		makeCompactGrid(inner2, personLabelStrings.length+1, 2, GAP, GAP, GAP, GAP);
+		
+		panel.add(inner1);
+		panel.add(inner2);
+		return panel;
+	}
+	private JComponent makeStoreUpdatePanel(){
+		JPanel panel = new JPanel(false);
+		panel.setLayout(new GridLayout(2, 1, 10, 0));
+		
+		JPanel inner1= new JPanel(new SpringLayout());
+		inner1.setBorder(BorderFactory.createTitledBorder("Before"));
+		JComponent[] panelRightComponent1 = new JComponent[storeLabelStrings.length];
+		JComponent[] panelLeftComponent1= new JComponent[storeLabelStrings.length];
+		int fieldNumber = 0;
+		panelRightComponent1[fieldNumber] = new JTextField();
+		((JTextField) panelRightComponent1[fieldNumber++]).setColumns(20);
+		panelRightComponent1[fieldNumber] = new JTextField();
+		((JTextField) panelRightComponent1[fieldNumber++]).setColumns(20);
+		panelRightComponent1[fieldNumber] = new JTextField();
+		((JTextField) panelRightComponent1[fieldNumber++]).setColumns(20);
+		panelRightComponent1[fieldNumber] = new JTextField();
+		((JTextField) panelRightComponent1[fieldNumber++]).setColumns(20);
+		panelRightComponent1[fieldNumber] = new JTextField();
+		((JTextField) panelRightComponent1[fieldNumber++]).setColumns(20);
+		panelRightComponent1[fieldNumber] = new JTextField();
+		for (int i = 0; i < storeLabelStrings.length; i++) {
+			panelLeftComponent1[i] = new JLabel(storeLabelStrings[i], JLabel.TRAILING);
+			((JLabel)panelLeftComponent1[i]).setLabelFor(panelRightComponent1[i]);
+			inner1.add(panelLeftComponent1[i]);
+			inner1.add(panelRightComponent1[i]);
+		}
+		inner1.add(new JLabel());
+		inner1.add(new JLabel());
+		makeCompactGrid(inner1, storeLabelStrings.length+1, 2, GAP, GAP, GAP, GAP);
+		
+		JPanel inner2= new JPanel(new SpringLayout());
+		inner2.setBorder(BorderFactory.createTitledBorder("After"));
+		JComponent[] panelRightComponent2 = new JComponent[storeLabelStrings.length];
+		JComponent[] panelLeftComponent2= new JComponent[storeLabelStrings.length];
+		fieldNumber = 0;
+		panelRightComponent2[fieldNumber] = new JTextField();
+		((JTextField) panelRightComponent2[fieldNumber++]).setColumns(20);
+		panelRightComponent2[fieldNumber] = new JTextField();
+		((JTextField) panelRightComponent2[fieldNumber++]).setColumns(20);
+		panelRightComponent2[fieldNumber] = new JTextField();
+		((JTextField) panelRightComponent2[fieldNumber++]).setColumns(20);
+		panelRightComponent2[fieldNumber] = new JTextField();
+		((JTextField) panelRightComponent2[fieldNumber++]).setColumns(20);
+		panelRightComponent2[fieldNumber] = new JTextField();
+		((JTextField) panelRightComponent2[fieldNumber++]).setColumns(20);
+		panelRightComponent2[fieldNumber] = new JTextField();
+		for (int i = 0; i < storeLabelStrings.length; i++) {
+			panelLeftComponent2[i] = new JLabel(storeLabelStrings[i], JLabel.TRAILING);
+			((JLabel)panelLeftComponent2[i]).setLabelFor(panelRightComponent2[i]);
+			inner2.add(panelLeftComponent2[i]);
+			inner2.add(panelRightComponent2[i]);
+		}
+		JButton button= new JButton("Insert");
+		inner2.add(button);
+		button= new JButton("Delete");
+		inner2.add(button);
+		makeCompactGrid(inner2, storeLabelStrings.length+1, 2, GAP, GAP, GAP, GAP);
+		
+		panel.add(inner1);
+		panel.add(inner2);
+		return panel;
+	}
+	
 	private JComponent makeHelpPanel() {
 		JPanel panel = new JPanel(false);
 		panel.setLayout(new GridLayout(1, 1, 0, 0));
