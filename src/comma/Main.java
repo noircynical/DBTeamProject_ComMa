@@ -34,4 +34,8 @@ public class Main {
 //			System.out.println("SQLState: " + sqex.getSQLState());
 //		}
 	}
+	
+	public static void callMain(){
+		System.out.println("");
+	}
 }
