@@ -1,0 +1,5 @@
+11101	Yeongdeungpogu	Mullae	Mullae
+11103	Mapogu	Mapo 	34100	
+11107	Mapogu	DMC	34100
+11111	Yeongdeungpogu	Daerim	27500
+11143	Joonggu	Cityhall	37600

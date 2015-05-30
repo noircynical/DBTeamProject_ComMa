@@ -1,0 +1,6 @@
+staff	10001	8	1	5300
+manager	10002	8	2	7000
+teammanager	10003	8	3	9000
+headmanager	10004	8	4	13000
+director	10005	7	5	20000
+president	10006	8	6	100000

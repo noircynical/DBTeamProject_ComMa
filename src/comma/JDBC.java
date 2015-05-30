@@ -11,26 +11,15 @@ public class JDBC {
 	public JDBC(){
 		try {
 			Connection con = null;
-
-			con = DriverManager.getConnection("jdbc:mysql://localhost",
-					"root", "dark1902");
+			con = DriverManager.getConnection("jdbc:mysql://localhost", "root", "dark1902");
 
 			Statement st = null;
 			ResultSet rs = null;
 			st = con.createStatement();
-//			rs = st.executeQuery("");
 			rs = st.executeQuery("SHOW DATABASES");
 
 			if (st.execute("SHOW DATABASES")) rs = st.getResultSet();
 
-			while (rs.next()) {
-				String str = rs.getNString(1);
-				System.out.println(str);
-			}
-			
-			rs= st.executeQuery("use homework01");
-			rs= st.executeQuery("show tables");
-			if (st.execute("SHOW TABLES")) rs = st.getResultSet();
 			while (rs.next()) {
 				String str = rs.getNString(1);
 				System.out.println(str);
