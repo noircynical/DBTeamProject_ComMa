@@ -7,6 +7,10 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -72,6 +76,8 @@ public class MainPanel extends JFrame {
 	}
 
 	private void initUI() {
+		createMenuBar();
+		
 		if (mPanel == null)
 			mPanel = new JPanel();
 		mPanel.setLayout(new GridLayout(1, 1, 0, 0));
@@ -96,6 +102,59 @@ public class MainPanel extends JFrame {
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
+	
+	private void createMenuBar() {
+        JMenuBar menubar = new JMenuBar();
+
+        JMenu file = new JMenu("Data");
+        file.setMnemonic(KeyEvent.VK_F);
+
+        JMenuItem eLoadItem = new JMenuItem("Load");
+        eLoadItem.setMnemonic(KeyEvent.VK_E);
+        eLoadItem.setToolTipText("Load Data");
+        eLoadItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent event) {
+            	try{
+            		Scanner in = new Scanner(new FileReader("/Users/noirCynical/Workspace/DB_ComMa/query_histo.txt"));
+            		String str= in.nextLine();
+            		JDBC.executeInitiate(str);
+            		System.out.println(str);
+            		while((str= in.nextLine()) != null && str.length()>3){
+            			JDBC.executeUpdate(str);
+            		}
+            	}catch(FileNotFoundException e){
+            		e.printStackTrace();
+            	}catch(NoSuchElementException e){}
+            }
+        });
+        JMenuItem eDropItem = new JMenuItem("Drop");
+        eDropItem.setMnemonic(KeyEvent.VK_E);
+        eDropItem.setToolTipText("Drop Data");
+        eDropItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent event) {
+            	JDBC.executeDropTable("drop table dbcourse_brand;");
+            	JDBC.executeDropTable("drop table dbcourse_location;");
+            	JDBC.executeDropTable("drop table dbcourse_menu_spec;");
+            	JDBC.executeDropTable("drop table dbcourse_menu;");
+            	JDBC.executeDropTable("drop table dbcourse_person;");
+            	JDBC.executeDropTable("drop table dbcourse_atmosphere;");
+            	JDBC.executeDropTable("drop table dbcourse_restaurant;");
+            	JDBC.executeDropTable("drop table dbcourse_position;");
+            	JDBC.executeDropTable("drop table dbcourse_evaluation;");
+            	JDBC.executeDropTable("drop table dbcourse_customer;");
+            	JDBC.executeDropTable("drop table dbcourse_reservation;");
+            }
+        });
+
+        file.add(eLoadItem);
+        file.add(eDropItem);
+        menubar.add(file);
+
+        setJMenuBar(menubar);
+    }
+
 
 	private JComponent makeSearchPanel() {
 		JPanel panel = new JPanel(false);
@@ -111,6 +170,8 @@ public class MainPanel extends JFrame {
 		mCondPane.addTab("Store", null, panel3, "search for Store");
 
 		panel.add(mCondPane);
+		searchResultTable= new JTable();
+		panel.add(searchResultTable);
 		return panel;
 	}
 	
@@ -734,6 +795,7 @@ public class MainPanel extends JFrame {
 				System.out.println(query);
 				JDBC.executeSelect(query, JDBC.STORE);
 			}else if(obj == menuInsertInsert){
+				String query= "insert into dbcourse_menu(menu_specid,menu_name,menu_id,menu_time,menu_cost) values (";
 				
 			}else if(obj == menuInsertDelete){
 				String query= "delete * from dbcourse_menu";
@@ -873,7 +935,7 @@ public class MainPanel extends JFrame {
 					menuUpdateTextAfter[i].setText("");
 				}
 			}else if(obj == menuUpdateAccept){
-				
+				String query= "update dbcourse_menu set ";
 			}else if(obj == personUpdateClear){
 				for(int i=0; i<personLabelStrings.length; i++){
 					personUpdateTextBefore[i].setText("");
