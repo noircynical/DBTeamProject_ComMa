@@ -38,13 +38,14 @@ public class JDBC {
 					"root", "dark1902");
 			Statement st = con.createStatement();
 			st.executeQuery("use comma;");
-			ResultSet rs = st.executeQuery(query);
-			if (st.execute(query)) rs = st.getResultSet();
-
-			while (rs.next()) {
-				String str= rs.getString("menu_name");
-				System.out.println(str);
-			}
+			st.executeQuery(query);
+//			ResultSet rs = st.executeQuery(query);
+//			if (st.execute(query)) rs = st.getResultSet();
+//
+//			while (rs.next()) {
+//				String str= rs.getString("menu_name");
+//				System.out.println(str);
+//			}
 		} catch (SQLException sqex) {
 			System.out.println("SQLException: " + sqex.getMessage());
 			System.out.println("SQLState: " + sqex.getSQLState());
