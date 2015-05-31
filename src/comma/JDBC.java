@@ -11,29 +11,6 @@ public class JDBC {
 	public static int PERSON= 1;
 	public static int STORE= 2;
 	
-	
-	public JDBC(){
-//		try {
-//			Connection con = null;
-//			con = DriverManager.getConnection("jdbc:mysql://localhost", "root", "dark1902");
-//
-//			Statement st = null;
-//			ResultSet rs = null;
-//			st = con.createStatement();
-//			rs = st.executeQuery("SHOW DATABASES");
-//
-//			if (st.execute("SHOW DATABASES")) rs = st.getResultSet();
-//
-//			while (rs.next()) {
-//				String str = rs.getNString(1);
-//				System.out.println(str);
-//			}
-//		} catch (SQLException sqex) {
-//			System.out.println("SQLException: " + sqex.getMessage());
-//			System.out.println("SQLState: " + sqex.getSQLState());
-//		}
-	}
-	
 	public static void executeQuery(String query){
 		try {
 			Connection con = null;
@@ -49,28 +26,6 @@ public class JDBC {
 //				String str= rs.getString("menu_name");
 //				System.out.println(str);
 //			}
-		} catch (SQLException sqex) {
-			System.out.println("SQLException: " + sqex.getMessage());
-			System.out.println("SQLState: " + sqex.getSQLState());
-		}
-	}
-	
-	public static void executeSelect(String query){
-		try {
-			Connection con = null;
-
-			con = DriverManager.getConnection("jdbc:mysql://localhost",
-					"root", "dark1902");
-			Statement st = con.createStatement();
-			st.executeQuery("use comma;");
-			ResultSet rs = st.executeQuery(query);
-			if (st.execute(query)) rs = st.getResultSet();
-
-			while (rs.next()) {
-				// 밑에줄 menu_name부분에 원하는 컬럼값 입력하면 출력댐!
-				String str= rs.getString("person_name");
-				System.out.println(str);
-			}
 		} catch (SQLException sqex) {
 			System.out.println("SQLException: " + sqex.getMessage());
 			System.out.println("SQLState: " + sqex.getSQLState());

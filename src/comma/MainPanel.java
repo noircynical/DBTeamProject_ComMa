@@ -594,19 +594,6 @@ public class MainPanel extends JFrame {
 		return panel;
 	}
 	
-//	public JTextField[] menuSearchText= new JTextField[4];
-//	public JTextField[] personSearchText= new JTextField[4];
-//	public JTextField[] storeSearchText= new JTextField[4];
-//	public JTextField[] menuInsertText= new JTextField[4];
-//	public JTextField[] personInsertText= new JTextField[4];
-//	public JTextField[] storeInsertText= new JTextField[4];
-//	public JTextField[] menuUpdateTextBefore= new JTextField[4];
-//	public JTextField[] storeUpdateTextBefore= new JTextField[4];
-//	public JTextField[] personUpdateTextBefore= new JTextField[4];
-//	public JTextField[] menuUpdateTextAfter= new JTextField[4];
-//	public JTextField[] personUpdateTextAfter= new JTextField[4];
-//	public JTextField[] storeUpdateTextAfter= new JTextField[4];
-	
 	ActionListener listener= new ActionListener(){
 		public void actionPerformed(ActionEvent e){ 
 			Object obj= e.getSource();
@@ -690,9 +677,7 @@ public class MainPanel extends JFrame {
 						if(!query.contains("employee")) query.replace(" where ", ",dbcourse_employee where ");
 						query += " and ";
 					}
-					query += "dbcourse_restaurant.restaurant_name=\'"+personSearchText[4].getText().toString()
-							+"\' and dbcourse_restaurant.restaurant_id=dbcourse_employee.restaurant_id"
-							+" and dbcourse_employee.person_id=dbcourse_person.person_id";
+					query += "dbcourse_employee.restaurant_name=\'"+personSearchText[4].getText().toString()+"\'";
 				}
 				query+=";";
 				
@@ -751,15 +736,137 @@ public class MainPanel extends JFrame {
 			}else if(obj == menuInsertInsert){
 				
 			}else if(obj == menuInsertDelete){
+				String query= "delete * from dbcourse_menu";
+				int start= -1;
 				
+				if(menuInsertText[0].getText().toString().length() > 0){
+					start= 0;
+					query += ",dbcourse_menu_spec where dbcourse_menu_spec.menu_specname=\'"+menuInsertText[0].getText().toString()
+							+"\' and dbcourse_menu_spec.menu_specid=dbcourse_menu.menu_specid";
+				}
+				if(menuInsertText[1].getText().toString().length() > 0){
+					if(start == -1) query += " where ";
+					else query += " and ";
+					start= 1;
+					query += "dbcourse_menu.menu_name=\'"+menuInsertText[1].getText().toString()+"\'";
+				}
+				if(menuInsertText[2].getText().toString().length() > 0){
+					if(start == -1) query += " where ";
+					else query += " and ";
+					start= 2;
+					query += "dbcourse_menu.menu_time="+menuInsertText[2].getText().toString();
+				}
+				if(menuInsertText[3].getText().toString().length() > 0){
+					if(start == -1) query += " where ";
+					else query += " and ";
+					start= 3;
+					query += "dbcourse_menu.menu_cost="+menuInsertText[3].getText().toString();
+				}
+				
+				query+=";";
+				System.out.println(query);
+				JDBC.executeQuery(query);
 			}else if(obj == personInsertInsert){
 				
 			}else if(obj == personInsertDelete){
+				String query= "delete * from dbcourse_person";
+				String[] text= new String[personLabelStrings.length];
+				int start= -1;
+
+				if(personInsertText[0].getText().toString().length() > 0){
+					query += " where ";
+					start= 0;
+					query +=  "dbcourse_person.person_name=\'"+personInsertText[0].getText().toString()+"\'";          ///이거
+				}
+				if(personInsertText[1].getText().toString().length() > 0){
+					if(start == -1) query += ",dbcourse_location where ";
+					else {
+						query.replace(" where ", ",dbcourse_location where ");
+						query += " and ";
+					}
+					start= 1;
+					query += "dbcourse_location.location_sname=\'"+personInsertText[1].getText().toString()
+							+"\' and dbcourse_location.location_sid=dbcourse_person.location_sid";
+				}
+				if(personInsertText[2].getText().toString().length() > 0){
+					if(start == -1) query += " where ";
+					else query += " and ";
+					start= 2;
+					query += "dbcourse_person.person_phonenum=\'"+personInsertText[2].getText().toString()+"\'";
+				}
+				if(personInsertText[3].getText().toString().length() > 0){
+					if(start == -1) query += ",dbcourse_employee,dbcourse_position where ";
+					else {
+						query.replace(" where ", ",dbcourse_employee,dbcourse_position where ");
+						query += " and ";
+					}
+					start= 3;
+					query += "dbcourse_position.position_name=\'"+personInsertText[3].getText().toString()
+							+"\' and dbcourse_position.position_id=dbcourse_employee.position_id"
+							+" and dbcourse_employee.person_id=dbcourse_person.person_id";
+				}
+				if(personInsertText[4].getText().toString().length() > 0){
+					if(start == -1) query += ",dbcourse_employee where ";
+					else {
+						if(!query.contains("employee")) query.replace(" where ", ",dbcourse_employee where ");
+						query += " and ";
+					}
+					query += "dbcourse_employee.restaurant_name=\'"+personInsertText[4].getText().toString()+"\'";
+				}
+				query+=";";
 				
+				System.out.println(query);
+				JDBC.executeQuery(query);
 			}else if(obj == storeInsertInsert){
 				
 			}else if(obj == storeInsertDelete){
-				
+				String query= "delete * from dbcourse_restaurant";
+				String[] text= new String[storeLabelStrings.length];
+				int start= -1;
+
+				if(storeInsertText[0].getText().toString().length() > 0){
+					start= 0;
+					query += ",dbcourse_brand where dbcourse_brand.brand_name=\'"+storeInsertText[0].getText().toString()
+							+"\' and dbcourse_brand.brand_id=dbcourse_restaurant.brand_id";
+				}
+				if(storeInsertText[1].getText().toString().length() > 0){
+					if(start == -1) query += " where ";
+					else query += " and ";
+					start= 1;
+					query += "dbcourse_restaurant.restaurant_name=\'"+storeInsertText[1].getText().toString()+"\'";
+				}
+				if(storeInsertText[2].getText().toString().length() > 0){
+					if(start == -1) query += ",dbcourse_location where ";
+					else {
+						query.replace(" where ", ",dbcourse_location where ");
+						query += " and ";
+					}
+					start= 3;
+					query += "dbcourse_location.location_sname=\'"+storeInsertText[2].getText().toString()
+							+"\' and dbcourse_location.location_sid=dbcourse_restaurant.location_sid";
+				}
+				if(storeInsertText[3].getText().toString().length() > 0){
+					if(start == -1) query += ",dbcourse_menu_spec where ";
+					else {
+						query.replace(" where ", ",dbcourse_menu_spec where ");
+						query += " and ";
+					}
+					query += "dbcourse_menu_spec.menu_specname=\'"+storeInsertText[3].getText().toString()
+							+"\' and dbcourse_menu_spec.menu_specid=dbcourse_restaurant.menu_specid";
+				}
+				if(storeInsertText[4].getText().toString().length() > 0){
+					if(start == -1) query += ",dbcourse_atmosphere where ";
+					else {
+						query.replace(" where ", ",dbcourse_atmosphere where ");
+						query += " and ";
+					}
+					query += "dbcourse_atmosphere.atmosphere_name=\'"+storeInsertText[4].getText().toString()
+							+"\' and dbcourse_atmosphere.atmosphere_id=dbcourse_restaurant.atmosphere_id";
+				}
+				query+=";";
+
+				System.out.println(query);
+				JDBC.executeQuery(query);
 			}else if(obj == menuUpdateClear){
 				for(int i=0; i<menuLabelStrings.length; i++){
 					menuUpdateTextBefore[i].setText("");
