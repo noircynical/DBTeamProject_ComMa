@@ -31,24 +31,24 @@ import javax.swing.table.DefaultTableModel;
 
 public class MainPanel extends JFrame {
 	final static int GAP = 10;
-	public String[] menuLabelStrings = { "분야", "이름", "조리시간", "단가"};
-	public String[] personLabelStrings = { "이름", "주소", "핸드폰번호", "직책", "매장이름" };
-	public String[] storeLabelStrings = { "브랜드명", "매장명", "지역", "세부지역", "메뉴분야", "분위기" };
+	public String[] menuLabelStrings = { "Menu Spec", "Menu Name", "Cooking Time", "Cost"};
+	public String[] personLabelStrings = { "Name", "Address", "Phone Number", "Position", "Restaurant" };
+	public String[] storeLabelStrings = { "Brand Name", "Restaurant Name", "Big Location", "Small Location", "Menu Spec", "Atmosphere" };
 
 	private JPanel mPanel = null;
 	
 	public JTextField[] menuSearchText= new JTextField[4];
-	public JTextField[] personSearchText= new JTextField[4];
-	public JTextField[] storeSearchText= new JTextField[4];
+	public JTextField[] personSearchText= new JTextField[5];
+	public JTextField[] storeSearchText= new JTextField[6];
 	public JTextField[] menuInsertText= new JTextField[4];
-	public JTextField[] personInsertText= new JTextField[4];
-	public JTextField[] storeInsertText= new JTextField[4];
+	public JTextField[] personInsertText= new JTextField[5];
+	public JTextField[] storeInsertText= new JTextField[6];
 	public JTextField[] menuUpdateTextBefore= new JTextField[4];
-	public JTextField[] storeUpdateTextBefore= new JTextField[4];
-	public JTextField[] personUpdateTextBefore= new JTextField[4];
+	public JTextField[] storeUpdateTextBefore= new JTextField[5];
+	public JTextField[] personUpdateTextBefore= new JTextField[6];
 	public JTextField[] menuUpdateTextAfter= new JTextField[4];
-	public JTextField[] personUpdateTextAfter= new JTextField[4];
-	public JTextField[] storeUpdateTextAfter= new JTextField[4];
+	public JTextField[] personUpdateTextAfter= new JTextField[5];
+	public JTextField[] storeUpdateTextAfter= new JTextField[6];
 	
 	public JButton menuSearchClear, menuSearchAccept;
 	public JButton personSearchClear, personSearchAccept;
@@ -60,6 +60,7 @@ public class MainPanel extends JFrame {
 	public JButton personUpdateClear, personUpdateAccept;
 	public JButton storeUpdateClear, storeUpdateAccept;
 	
+	public JTable searchResultTable= null;
 	
 	private Vector<String> serachPersonColumn= null;
 	private DefaultTableModel searchPersonTableModel= null; 
@@ -67,7 +68,7 @@ public class MainPanel extends JFrame {
 	public MainPanel() {
 		initUI();
 		
-		openJDBC();
+//		openJDBC();
 	}
 
 	private void initUI() {
@@ -122,7 +123,6 @@ public class MainPanel extends JFrame {
 	private JComponent makeSearchMenuPanel() {
 		JPanel panel = new JPanel(new SpringLayout());
 		
-//		JComponent[] panelRightComponent = new JComponent[menuLabelStrings.length];
 		menuSearchText= new JTextField[menuLabelStrings.length];
 		JComponent[] panelLeftComponent= new JComponent[menuLabelStrings.length];
 		int fieldNumber = 0;
@@ -144,8 +144,10 @@ public class MainPanel extends JFrame {
 		}
 		
 		menuSearchClear= new JButton("Clear");
+		menuSearchClear.addActionListener(listener);
 		panel.add(menuSearchClear);
 		menuSearchAccept= new JButton("Search");
+		menuSearchAccept.addActionListener(listener);
 		panel.add(menuSearchAccept);
 		
 		makeCompactGrid(panel, menuLabelStrings.length+1, 2, GAP, GAP, GAP, GAP);
@@ -154,7 +156,6 @@ public class MainPanel extends JFrame {
 	private JComponent makeSearchPersonPanel() {
 		JPanel panel = new JPanel(new SpringLayout());
 		
-//		JComponent[] panelRightComponent = new JComponent[personLabelStrings.length];
 		personSearchText= new JTextField[personLabelStrings.length];
 		JComponent[] panelLeftComponent= new JComponent[personLabelStrings.length];
 		int fieldNumber = 0;
@@ -178,8 +179,10 @@ public class MainPanel extends JFrame {
 		}
 		
 		personSearchClear= new JButton("Clear");
+		personSearchClear.addActionListener(listener);
 		panel.add(personSearchClear);
 		personSearchAccept= new JButton("Search");
+		personSearchAccept.addActionListener(listener);
 		panel.add(personSearchAccept);
 		
 		makeCompactGrid(panel, personLabelStrings.length+1, 2, GAP, GAP, 20, GAP);
@@ -188,7 +191,6 @@ public class MainPanel extends JFrame {
 	private JComponent makeSearchStorePanel() {
 		JPanel panel = new JPanel(new SpringLayout());
 		
-//		JComponent[] panelRightComponent = new JComponent[storeLabelStrings.length];
 		storeSearchText= new JTextField[storeLabelStrings.length];
 		JComponent[] panelLeftComponent= new JComponent[storeLabelStrings.length];
 		int fieldNumber = 0;
@@ -214,8 +216,10 @@ public class MainPanel extends JFrame {
 		}
 		
 		storeSearchClear= new JButton("Clear");
+		storeSearchClear.addActionListener(listener);
 		panel.add(storeSearchClear);
 		storeSearchAccept= new JButton("Search");
+		storeSearchAccept.addActionListener(listener);
 		panel.add(storeSearchAccept);
 		
 		makeCompactGrid(panel, storeLabelStrings.length+1, 2, GAP, GAP, GAP, GAP);
@@ -241,7 +245,6 @@ public class MainPanel extends JFrame {
 	private JComponent makeInsertMenuPanel() {
 		JPanel panel = new JPanel(new SpringLayout());
 		
-//		JComponent[] panelRightComponent = new JComponent[menuLabelStrings.length];
 		menuInsertText= new JTextField[menuLabelStrings.length];
 		JComponent[] panelLeftComponent= new JComponent[menuLabelStrings.length];
 		int fieldNumber = 0;
@@ -263,8 +266,10 @@ public class MainPanel extends JFrame {
 		}
 		
 		menuInsertInsert= new JButton("Insert");
+		menuInsertInsert.addActionListener(listener);
 		panel.add(menuInsertInsert);
 		menuInsertDelete= new JButton("Delete");
+		menuInsertDelete.addActionListener(listener);
 		panel.add(menuInsertDelete);
 		
 		makeCompactGrid(panel, menuLabelStrings.length+1, 2, GAP, GAP, GAP, GAP);
@@ -273,7 +278,6 @@ public class MainPanel extends JFrame {
 	private JComponent makeInsertPersonPanel() {
 		JPanel panel = new JPanel(new SpringLayout());
 		
-//		JComponent[] panelRightComponent = new JComponent[personLabelStrings.length];
 		personInsertText= new JTextField[personLabelStrings.length];
 		JComponent[] panelLeftComponent= new JComponent[personLabelStrings.length];
 		int fieldNumber = 0;
@@ -297,8 +301,10 @@ public class MainPanel extends JFrame {
 		}
 		
 		personInsertInsert= new JButton("Insert");
+		personInsertInsert.addActionListener(listener);
 		panel.add(personInsertInsert);
 		personInsertDelete= new JButton("Delete");
+		personInsertDelete.addActionListener(listener);
 		panel.add(personInsertDelete);
 		
 		makeCompactGrid(panel, personLabelStrings.length+1, 2, GAP, GAP, GAP, GAP);
@@ -307,7 +313,6 @@ public class MainPanel extends JFrame {
 	private JComponent makeInsertStorePanel() {
 		JPanel panel = new JPanel(new SpringLayout());
 		
-//		JComponent[] panelRightComponent = new JComponent[storeLabelStrings.length];
 		storeInsertText= new JTextField[storeLabelStrings.length];
 		JComponent[] panelLeftComponent= new JComponent[storeLabelStrings.length];
 		int fieldNumber = 0;
@@ -333,8 +338,10 @@ public class MainPanel extends JFrame {
 		}
 		
 		storeInsertInsert= new JButton("Insert");
+		storeInsertInsert.addActionListener(listener);
 		panel.add(storeInsertInsert);
 		storeInsertDelete= new JButton("Delete");
+		storeInsertDelete.addActionListener(listener);
 		panel.add(storeInsertDelete);
 		
 		makeCompactGrid(panel, storeLabelStrings.length+1, 2, GAP, GAP, GAP, GAP);
@@ -364,7 +371,6 @@ public class MainPanel extends JFrame {
 		
 		JPanel inner1= new JPanel(new SpringLayout());
 		inner1.setBorder(BorderFactory.createTitledBorder("Before"));
-//		JComponent[] panelRightComponent1 = new JComponent[menuLabelStrings.length];
 		menuUpdateTextBefore= new JTextField[menuLabelStrings.length];
 		JComponent[] panelLeftComponent1= new JComponent[menuLabelStrings.length];
 		int fieldNumber = 0;
@@ -387,7 +393,6 @@ public class MainPanel extends JFrame {
 		
 		JPanel inner2= new JPanel(new SpringLayout());
 		inner2.setBorder(BorderFactory.createTitledBorder("After"));
-//		JComponent[] panelRightComponent2 = new JComponent[menuLabelStrings.length];
 		menuUpdateTextAfter= new JTextField[menuLabelStrings.length];
 		JComponent[] panelLeftComponent2= new JComponent[menuLabelStrings.length];
 		fieldNumber = 0;
@@ -405,8 +410,10 @@ public class MainPanel extends JFrame {
 			inner2.add(menuUpdateTextAfter[i]);
 		}
 		menuUpdateClear= new JButton("Clear");
+		menuUpdateClear.addActionListener(listener);
 		inner2.add(menuUpdateClear);
 		menuUpdateAccept= new JButton("Update");
+		menuUpdateAccept.addActionListener(listener);
 		inner2.add(menuUpdateAccept);
 		makeCompactGrid(inner2, menuLabelStrings.length+1, 2, GAP, GAP, GAP, GAP);
 		
@@ -420,7 +427,6 @@ public class MainPanel extends JFrame {
 		
 		JPanel inner1= new JPanel(new SpringLayout());
 		inner1.setBorder(BorderFactory.createTitledBorder("Before"));
-//		JComponent[] panelRightComponent1 = new JComponent[personLabelStrings.length];
 		personUpdateTextBefore= new JTextField[personLabelStrings.length];
 		JComponent[] panelLeftComponent1= new JComponent[personLabelStrings.length];
 		int fieldNumber = 0;
@@ -433,7 +439,6 @@ public class MainPanel extends JFrame {
 		personUpdateTextBefore[fieldNumber] = new JTextField();
 		((JTextField) personUpdateTextBefore[fieldNumber++]).setColumns(20);
 		personUpdateTextBefore[fieldNumber] = new JTextField();
-//		((JTextField) panelRightComponent1[fieldNumber++]).setColumns(20);
 		for (int i = 0; i < personLabelStrings.length; i++) {
 			panelLeftComponent1[i] = new JLabel(personLabelStrings[i], JLabel.TRAILING);
 			((JLabel)panelLeftComponent1[i]).setLabelFor(personUpdateTextBefore[i]);
@@ -446,7 +451,6 @@ public class MainPanel extends JFrame {
 		
 		JPanel inner2= new JPanel(new SpringLayout());
 		inner2.setBorder(BorderFactory.createTitledBorder("After"));
-//		JComponent[] panelRightComponent2 = new JComponent[personLabelStrings.length];
 		personUpdateTextAfter= new JTextField[personLabelStrings.length];
 		JComponent[] panelLeftComponent2= new JComponent[personLabelStrings.length];
 		fieldNumber = 0;
@@ -459,7 +463,6 @@ public class MainPanel extends JFrame {
 		personUpdateTextAfter[fieldNumber] = new JTextField();
 		((JTextField) personUpdateTextAfter[fieldNumber++]).setColumns(20);
 		personUpdateTextAfter[fieldNumber] = new JTextField();
-//		((JTextField) panelRightComponent2[fieldNumber++]).setColumns(20);
 		for (int i = 0; i < personLabelStrings.length; i++) {
 			panelLeftComponent2[i] = new JLabel(personLabelStrings[i], JLabel.TRAILING);
 			((JLabel)panelLeftComponent2[i]).setLabelFor(personUpdateTextAfter[i]);
@@ -467,8 +470,10 @@ public class MainPanel extends JFrame {
 			inner2.add(personUpdateTextAfter[i]);
 		}
 		personUpdateClear= new JButton("Clear");
+		personUpdateClear.addActionListener(listener);
 		inner2.add(personUpdateClear);
 		personUpdateAccept= new JButton("Update");
+		personUpdateAccept.addActionListener(listener);
 		inner2.add(personUpdateAccept);
 		makeCompactGrid(inner2, personLabelStrings.length+1, 2, GAP, GAP, GAP, GAP);
 		
@@ -482,7 +487,6 @@ public class MainPanel extends JFrame {
 		
 		JPanel inner1= new JPanel(new SpringLayout());
 		inner1.setBorder(BorderFactory.createTitledBorder("Before"));
-//		JComponent[] panelRightComponent1 = new JComponent[storeLabelStrings.length];
 		storeUpdateTextBefore= new JTextField[storeLabelStrings.length];
 		JComponent[] panelLeftComponent1= new JComponent[storeLabelStrings.length];
 		int fieldNumber = 0;
@@ -509,7 +513,6 @@ public class MainPanel extends JFrame {
 		
 		JPanel inner2= new JPanel(new SpringLayout());
 		inner2.setBorder(BorderFactory.createTitledBorder("After"));
-//		JComponent[] panelRightComponent2 = new JComponent[storeLabelStrings.length];
 		storeUpdateTextAfter= new JTextField[storeLabelStrings.length];
 		JComponent[] panelLeftComponent2= new JComponent[storeLabelStrings.length];
 		fieldNumber = 0;
@@ -531,8 +534,10 @@ public class MainPanel extends JFrame {
 			inner2.add(storeUpdateTextAfter[i]);
 		}
 		storeUpdateClear= new JButton("Clear");
+		storeUpdateClear.addActionListener(listener);
 		inner2.add(storeUpdateClear);
 		storeUpdateAccept= new JButton("Update");
+		storeUpdateAccept.addActionListener(listener);
 		inner2.add(storeUpdateAccept);
 		makeCompactGrid(inner2, storeLabelStrings.length+1, 2, GAP, GAP, GAP, GAP);
 		
@@ -588,6 +593,91 @@ public class MainPanel extends JFrame {
 		panel.add(filler);
 		return panel;
 	}
+	
+//	public JTextField[] menuSearchText= new JTextField[4];
+//	public JTextField[] personSearchText= new JTextField[4];
+//	public JTextField[] storeSearchText= new JTextField[4];
+//	public JTextField[] menuInsertText= new JTextField[4];
+//	public JTextField[] personInsertText= new JTextField[4];
+//	public JTextField[] storeInsertText= new JTextField[4];
+//	public JTextField[] menuUpdateTextBefore= new JTextField[4];
+//	public JTextField[] storeUpdateTextBefore= new JTextField[4];
+//	public JTextField[] personUpdateTextBefore= new JTextField[4];
+//	public JTextField[] menuUpdateTextAfter= new JTextField[4];
+//	public JTextField[] personUpdateTextAfter= new JTextField[4];
+//	public JTextField[] storeUpdateTextAfter= new JTextField[4];
+	
+	ActionListener listener= new ActionListener(){
+		public void actionPerformed(ActionEvent e){ 
+			Object obj= e.getSource();
+			
+			if(obj == menuSearchClear){
+				menuSearchText[0].setText("");
+				menuSearchText[1].setText("");
+				menuSearchText[2].setText("");
+				menuSearchText[3].setText("");
+			}else if(obj == menuSearchAccept){
+			}else if(obj == personSearchClear){
+				personSearchText[0].setText("");
+				personSearchText[1].setText("");
+				personSearchText[2].setText("");
+				personSearchText[3].setText("");
+				personSearchText[4].setText("");
+			}else if(obj == personSearchAccept){
+			}else if(obj == storeSearchClear){
+				storeSearchText[0].setText("");
+				storeSearchText[1].setText("");
+				storeSearchText[2].setText("");
+				storeSearchText[3].setText("");
+				storeSearchText[4].setText("");
+				storeSearchText[5].setText("");
+			}else if(obj == storeSearchAccept){
+			}else if(obj == menuInsertInsert){
+			}else if(obj == menuInsertDelete){
+			}else if(obj == personInsertInsert){
+			}else if(obj == personInsertDelete){
+			}else if(obj == storeInsertInsert){
+			}else if(obj == storeInsertDelete){
+			}else if(obj == menuUpdateClear){
+				menuUpdateTextBefore[0].setText("");
+				menuUpdateTextBefore[1].setText("");
+				menuUpdateTextBefore[2].setText("");
+				menuUpdateTextBefore[3].setText("");
+				menuUpdateTextAfter[0].setText("");
+				menuUpdateTextAfter[1].setText("");
+				menuUpdateTextAfter[2].setText("");
+				menuUpdateTextAfter[3].setText("");
+			}else if(obj == menuUpdateAccept){
+			}else if(obj == personUpdateClear){
+				personUpdateTextBefore[0].setText("");
+				personUpdateTextBefore[1].setText("");
+				personUpdateTextBefore[2].setText("");
+				personUpdateTextBefore[3].setText("");
+				personUpdateTextBefore[4].setText("");
+				personUpdateTextAfter[0].setText("");
+				personUpdateTextAfter[1].setText("");
+				personUpdateTextAfter[2].setText("");
+				personUpdateTextAfter[3].setText("");
+				personUpdateTextAfter[4].setText("");
+			}else if(obj == personUpdateAccept){
+			}else if(obj == storeUpdateClear){
+				storeUpdateTextBefore[0].setText("");
+				storeUpdateTextBefore[1].setText("");
+				storeUpdateTextBefore[2].setText("");
+				storeUpdateTextBefore[3].setText("");
+				storeUpdateTextBefore[4].setText("");
+				storeUpdateTextBefore[5].setText("");
+				storeUpdateTextAfter[0].setText("");
+				storeUpdateTextAfter[1].setText("");
+				storeUpdateTextAfter[2].setText("");
+				storeUpdateTextAfter[3].setText("");
+				storeUpdateTextAfter[4].setText("");
+				storeUpdateTextAfter[5].setText("");
+			}else if(obj == storeUpdateAccept){
+			}
+			
+		}
+	};
 
 //	private void createTopBar() {
 //		JMenuBar menubar = new JMenuBar();
