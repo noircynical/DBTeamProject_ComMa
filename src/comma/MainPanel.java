@@ -33,22 +33,22 @@ public class MainPanel extends JFrame {
 	final static int GAP = 10;
 	public String[] menuLabelStrings = { "Menu Spec", "Menu Name", "Cooking Time", "Cost"};
 	public String[] personLabelStrings = { "Name", "Address", "Phone Number", "Position", "Restaurant" };
-	public String[] storeLabelStrings = { "Brand Name", "Restaurant Name", "Big Location", "Small Location", "Menu Spec", "Atmosphere" };
+	public String[] storeLabelStrings = { "Brand Name", "Restaurant Name", "Location", "Menu Spec", "Atmosphere" };
 
 	private JPanel mPanel = null;
 	
 	public JTextField[] menuSearchText= new JTextField[4];
 	public JTextField[] personSearchText= new JTextField[5];
-	public JTextField[] storeSearchText= new JTextField[6];
+	public JTextField[] storeSearchText= new JTextField[5];
 	public JTextField[] menuInsertText= new JTextField[4];
 	public JTextField[] personInsertText= new JTextField[5];
-	public JTextField[] storeInsertText= new JTextField[6];
+	public JTextField[] storeInsertText= new JTextField[5];
 	public JTextField[] menuUpdateTextBefore= new JTextField[4];
 	public JTextField[] storeUpdateTextBefore= new JTextField[5];
-	public JTextField[] personUpdateTextBefore= new JTextField[6];
+	public JTextField[] personUpdateTextBefore= new JTextField[5];
 	public JTextField[] menuUpdateTextAfter= new JTextField[4];
 	public JTextField[] personUpdateTextAfter= new JTextField[5];
-	public JTextField[] storeUpdateTextAfter= new JTextField[6];
+	public JTextField[] storeUpdateTextAfter= new JTextField[5];
 	
 	public JButton menuSearchClear, menuSearchAccept;
 	public JButton personSearchClear, personSearchAccept;
@@ -205,8 +205,8 @@ public class MainPanel extends JFrame {
 		((JTextField) storeSearchText[fieldNumber++]).setColumns(20);
 		storeSearchText[fieldNumber] = new JTextField();
 		((JTextField) storeSearchText[fieldNumber++]).setColumns(20);
-		storeSearchText[fieldNumber] = new JTextField();
-		((JTextField) storeSearchText[fieldNumber++]).setColumns(20);
+//		storeSearchText[fieldNumber] = new JTextField();
+//		((JTextField) storeSearchText[fieldNumber++]).setColumns(20);
 
 		for (int i = 0; i < storeLabelStrings.length; i++) {
 			panelLeftComponent[i] = new JLabel(storeLabelStrings[i], JLabel.TRAILING);
@@ -327,8 +327,8 @@ public class MainPanel extends JFrame {
 		((JTextField) storeInsertText[fieldNumber++]).setColumns(20);
 		storeInsertText[fieldNumber] = new JTextField();
 		((JTextField) storeInsertText[fieldNumber++]).setColumns(20);
-		storeInsertText[fieldNumber] = new JTextField();
-		((JTextField) storeInsertText[fieldNumber++]).setColumns(20);
+//		storeInsertText[fieldNumber] = new JTextField();
+//		((JTextField) storeInsertText[fieldNumber++]).setColumns(20);
 
 		for (int i = 0; i < storeLabelStrings.length; i++) {
 			panelLeftComponent[i] = new JLabel(storeLabelStrings[i], JLabel.TRAILING);
@@ -500,7 +500,7 @@ public class MainPanel extends JFrame {
 		((JTextField) storeUpdateTextBefore[fieldNumber++]).setColumns(20);
 		storeUpdateTextBefore[fieldNumber] = new JTextField();
 		((JTextField) storeUpdateTextBefore[fieldNumber++]).setColumns(20);
-		storeUpdateTextBefore[fieldNumber] = new JTextField();
+//		storeUpdateTextBefore[fieldNumber] = new JTextField();
 		for (int i = 0; i < storeLabelStrings.length; i++) {
 			panelLeftComponent1[i] = new JLabel(storeLabelStrings[i], JLabel.TRAILING);
 			((JLabel)panelLeftComponent1[i]).setLabelFor(storeUpdateTextBefore[i]);
@@ -526,7 +526,7 @@ public class MainPanel extends JFrame {
 		((JTextField) storeUpdateTextAfter[fieldNumber++]).setColumns(20);
 		storeUpdateTextAfter[fieldNumber] = new JTextField();
 		((JTextField) storeUpdateTextAfter[fieldNumber++]).setColumns(20);
-		storeUpdateTextAfter[fieldNumber] = new JTextField();
+//		storeUpdateTextAfter[fieldNumber] = new JTextField();
 		for (int i = 0; i < storeLabelStrings.length; i++) {
 			panelLeftComponent2[i] = new JLabel(storeLabelStrings[i], JLabel.TRAILING);
 			((JLabel)panelLeftComponent2[i]).setLabelFor(storeUpdateTextAfter[i]);
@@ -644,91 +644,110 @@ public class MainPanel extends JFrame {
 				query+=";";
 				
 				System.out.println(query);
-				JDBC.executeSelect(query);
+				JDBC.executeSelect(query, JDBC.MENU);
 			}else if(obj == personSearchClear){
 				for(int i=0; i<personLabelStrings.length; i++) personSearchText[i].setText("");
 			}else if(obj == personSearchAccept){
-				String query= "select * from dbcourse_person,dbcourse_employee,dbcourse_customer";
+				String query= "select * from dbcourse_person";
 				String[] text= new String[personLabelStrings.length];
 				int start= -1;
-				
+
 				if(personSearchText[0].getText().toString().length() > 0){
 					query += " where ";
 					start= 0;
-					query += "dbcourse_person.person_name=\'"+personSearchText[0].getText().toString()+"\'";
+					query +=  "dbcourse_person.person_name=\'"+personSearchText[0].getText().toString()+"\'";          ///이거
 				}
 				if(personSearchText[1].getText().toString().length() > 0){
-					if(start == -1) query += " where ";
-					else query += " and ";
+					if(start == -1) query += ",dbcourse_location where ";
+					else {
+						query.replace(" where ", ",dbcourse_location where ");
+						query += " and ";
+					}
 					start= 1;
-					query += "dbcourse_person.menu_specname=\'"+personSearchText[1].getText().toString()+"\'";
+					query += "dbcourse_location.location_sname=\'"+personSearchText[1].getText().toString()
+							+"\' and dbcourse_location.location_sid=dbcourse_person.location_sid";
 				}
 				if(personSearchText[2].getText().toString().length() > 0){
 					if(start == -1) query += " where ";
 					else query += " and ";
 					start= 2;
-					query += "dbcourse_person.menu_time="+personSearchText[2].getText().toString();
+					query += "dbcourse_person.person_phonenum=\'"+personSearchText[2].getText().toString()+"\'";
 				}
 				if(personSearchText[3].getText().toString().length() > 0){
-					if(start == -1) query += " where ";
-					else query += " and ";
+					if(start == -1) query += ",dbcourse_employee,dbcourse_position where ";
+					else {
+						query.replace(" where ", ",dbcourse_employee,dbcourse_position where ");
+						query += " and ";
+					}
 					start= 3;
-					query += "dbcourse_person.person_phonenum=\'"+personSearchText[3].getText().toString()+"\'";
+					query += "dbcourse_position.position_name=\'"+personSearchText[3].getText().toString()
+							+"\' and dbcourse_position.position_id=dbcourse_employee.position_id"
+							+" and dbcourse_employee.person_id=dbcourse_person.person_id";
 				}
 				if(personSearchText[4].getText().toString().length() > 0){
-					if(start == -1) query += " where ";
-					else query += " and ";
-					query += "dbcourse_person.menu_cost="+personSearchText[4].getText().toString();
+					if(start == -1) query += ",dbcourse_employee where ";
+					else {
+						if(!query.contains("employee")) query.replace(" where ", ",dbcourse_employee where ");
+						query += " and ";
+					}
+					query += "dbcourse_restaurant.restaurant_name=\'"+personSearchText[4].getText().toString()
+							+"\' and dbcourse_restaurant.restaurant_id=dbcourse_employee.restaurant_id"
+							+" and dbcourse_employee.person_id=dbcourse_person.person_id";
 				}
 				query+=";";
 				
 				System.out.println(query);
-				JDBC.executeSelect(query);
+				JDBC.executeSelect(query, JDBC.PERSON);
 			}else if(obj == storeSearchClear){
 				for(int i=0; i<storeLabelStrings.length; i++) storeSearchText[i].setText("");
 			}else if(obj == storeSearchAccept){
-				String query= "select * from dbcourse_brand,dbcourse_restaurant";
+				String query= "select distinct * from dbcourse_restaurant";
 				String[] text= new String[storeLabelStrings.length];
 				int start= -1;
-				
+
 				if(storeSearchText[0].getText().toString().length() > 0){
-					query += " where ";
 					start= 0;
-					query += "dbcourse_person.person_name=\'"+storeSearchText[0].getText().toString()+"\'";
+					query += ",dbcourse_brand where dbcourse_brand.brand_name=\'"+storeSearchText[0].getText().toString()
+							+"\' and dbcourse_brand.brand_id=dbcourse_restaurant.brand_id";
 				}
 				if(storeSearchText[1].getText().toString().length() > 0){
 					if(start == -1) query += " where ";
 					else query += " and ";
 					start= 1;
-					query += "dbcourse_person.menu_specname=\'"+storeSearchText[1].getText().toString()+"\'";
+					query += "dbcourse_restaurant.restaurant_name=\'"+storeSearchText[1].getText().toString()+"\'";
 				}
 				if(storeSearchText[2].getText().toString().length() > 0){
-					if(start == -1) query += " where ";
-					else query += " and ";
-					start= 2;
-					query += "dbcourse_person.menu_time="+storeSearchText[2].getText().toString();
+					if(start == -1) query += ",dbcourse_location where ";
+					else {
+						query.replace(" where ", ",dbcourse_location where ");
+						query += " and ";
+					}
+					start= 3;
+					query += "dbcourse_location.location_sname=\'"+storeSearchText[2].getText().toString()
+							+"\' and dbcourse_location.location_sid=dbcourse_restaurant.location_sid";
 				}
 				if(storeSearchText[3].getText().toString().length() > 0){
-					if(start == -1) query += " where ";
-					else query += " and ";
-					start= 3;
-					query += "dbcourse_person.person_phonenum=\'"+storeSearchText[3].getText().toString()+"\'";
+					if(start == -1) query += ",dbcourse_menu_spec where ";
+					else {
+						query.replace(" where ", ",dbcourse_menu_spec where ");
+						query += " and ";
+					}
+					query += "dbcourse_menu_spec.menu_specname=\'"+storeSearchText[3].getText().toString()
+							+"\' and dbcourse_menu_spec.menu_specid=dbcourse_restaurant.menu_specid";
 				}
 				if(storeSearchText[4].getText().toString().length() > 0){
-					if(start == -1) query += " where ";
-					else query += " and ";
-					start= 4;
-					query += "dbcourse_person.menu_cost="+storeSearchText[4].getText().toString();
-				}
-				if(storeSearchText[5].getText().toString().length() > 0){
-					if(start == -1) query += " where ";
-					else query += " and ";
-					query += "dbcourse_person.menu_cost="+storeSearchText[5].getText().toString();
+					if(start == -1) query += ",dbcourse_atmosphere where ";
+					else {
+						query.replace(" where ", ",dbcourse_atmosphere where ");
+						query += " and ";
+					}
+					query += "dbcourse_atmosphere.atmosphere_name=\'"+storeSearchText[4].getText().toString()
+							+"\' and dbcourse_atmosphere.atmosphere_id=dbcourse_restaurant.atmosphere_id";
 				}
 				query+=";";
-				
+
 				System.out.println(query);
-				JDBC.executeSelect(query);
+				JDBC.executeSelect(query, JDBC.STORE);
 			}else if(obj == menuInsertInsert){
 				
 			}else if(obj == menuInsertDelete){
@@ -808,7 +827,6 @@ public class MainPanel extends JFrame {
 			y = Spring.sum(y, Spring.sum(height, Spring.constant(yPad)));
 		}
 
-		// Set the parent's size.
 		SpringLayout.Constraints pCons = layout.getConstraints(parent);
 		pCons.setConstraint(SpringLayout.SOUTH, y);
 		pCons.setConstraint(SpringLayout.EAST, x);
