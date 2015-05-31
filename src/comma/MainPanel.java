@@ -25,6 +25,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
@@ -44,8 +45,8 @@ public class MainPanel extends JFrame {
 	public JTextField[] menuSearchText= new JTextField[4];
 	public JTextField[] personSearchText= new JTextField[5];
 	public JTextField[] storeSearchText= new JTextField[5];
-	public JTextField[] menuInsertText= new JTextField[4];
-	public JTextField[] personInsertText= new JTextField[5];
+	public JTextField[] menuInsertText= new JTextField[3];
+	public JTextField[] personInsertText= new JTextField[3];
 	public JTextField[] storeInsertText= new JTextField[5];
 	public JTextField[] menuUpdateTextBefore= new JTextField[4];
 	public JTextField[] storeUpdateTextBefore= new JTextField[5];
@@ -69,12 +70,12 @@ public class MainPanel extends JFrame {
 	private Vector<String> serachPersonColumn= null;
 	private DefaultTableModel searchPersonTableModel= null; 
 
+	// panel constuctor >> draw the display
 	public MainPanel() {
 		initUI();
-		
-//		openJDBC();
 	}
 
+	// initializ the ui of display
 	private void initUI() {
 		createMenuBar();
 		
@@ -116,13 +117,12 @@ public class MainPanel extends JFrame {
             @Override
             public void actionPerformed(ActionEvent event) {
             	try{
+            		// open the file and read the data >> execute the query
             		Scanner in = new Scanner(new FileReader("/Users/noirCynical/Workspace/DB_ComMa/query_histo.txt"));
             		String str= in.nextLine();
             		JDBC.executeInitiate(str);
             		System.out.println(str);
-            		while((str= in.nextLine()) != null && str.length()>3){
-            			JDBC.executeUpdate(str);
-            		}
+            		while((str= in.nextLine()) != null && str.length()>3) JDBC.executeUpdate(str);
             	}catch(FileNotFoundException e){
             		e.printStackTrace();
             	}catch(NoSuchElementException e){}
@@ -134,6 +134,7 @@ public class MainPanel extends JFrame {
         eDropItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event) {
+            	// drop the table of database 'comma'
             	JDBC.executeDropTable("drop table dbcourse_brand;");
             	JDBC.executeDropTable("drop table dbcourse_location;");
             	JDBC.executeDropTable("drop table dbcourse_menu_spec;");
@@ -155,7 +156,6 @@ public class MainPanel extends JFrame {
         setJMenuBar(menubar);
     }
 
-
 	private JComponent makeSearchPanel() {
 		JPanel panel = new JPanel(false);
 		panel.setLayout(new GridLayout(2, 1, 10, 0));
@@ -171,7 +171,10 @@ public class MainPanel extends JFrame {
 
 		panel.add(mCondPane);
 		searchResultTable= new JTable();
-		panel.add(searchResultTable);
+		JScrollPane scrPane= new JScrollPane();
+		scrPane.setViewportView(searchResultTable);
+		
+		panel.add(scrPane);
 		return panel;
 	}
 	
@@ -266,8 +269,6 @@ public class MainPanel extends JFrame {
 		((JTextField) storeSearchText[fieldNumber++]).setColumns(20);
 		storeSearchText[fieldNumber] = new JTextField();
 		((JTextField) storeSearchText[fieldNumber++]).setColumns(20);
-//		storeSearchText[fieldNumber] = new JTextField();
-//		((JTextField) storeSearchText[fieldNumber++]).setColumns(20);
 
 		for (int i = 0; i < storeLabelStrings.length; i++) {
 			panelLeftComponent[i] = new JLabel(storeLabelStrings[i], JLabel.TRAILING);
@@ -316,14 +317,12 @@ public class MainPanel extends JFrame {
 		((JTextField) menuInsertText[fieldNumber++]).setColumns(20);
 		menuInsertText[fieldNumber] = new JTextField();
 		((JTextField) menuInsertText[fieldNumber++]).setColumns(20);
-		menuInsertText[fieldNumber] = new JTextField();
-		((JTextField) menuInsertText[fieldNumber++]).setColumns(20);
 
-		for (int i = 0; i < menuLabelStrings.length; i++) {
-			panelLeftComponent[i] = new JLabel(menuLabelStrings[i], JLabel.TRAILING);
-			((JLabel)panelLeftComponent[i]).setLabelFor(menuInsertText[i]);
-			panel.add(panelLeftComponent[i]);
-			panel.add(menuInsertText[i]);
+		for (int i = 1; i < menuLabelStrings.length; i++) {
+			panelLeftComponent[i-1] = new JLabel(menuLabelStrings[i], JLabel.TRAILING);
+			((JLabel)panelLeftComponent[i-1]).setLabelFor(menuInsertText[i-1]);
+			panel.add(panelLeftComponent[i-1]);
+			panel.add(menuInsertText[i-1]);
 		}
 		
 		menuInsertInsert= new JButton("Insert");
@@ -333,7 +332,7 @@ public class MainPanel extends JFrame {
 		menuInsertDelete.addActionListener(listener);
 		panel.add(menuInsertDelete);
 		
-		makeCompactGrid(panel, menuLabelStrings.length+1, 2, GAP, GAP, GAP, GAP);
+		makeCompactGrid(panel, menuLabelStrings.length, 2, GAP, GAP, GAP, GAP);
 		return panel;
 	}
 	private JComponent makeInsertPersonPanel() {
@@ -349,12 +348,8 @@ public class MainPanel extends JFrame {
 		((JTextField) personInsertText[fieldNumber++]).setColumns(20);
 		personInsertText[fieldNumber] = new JTextField();
 		((JTextField) personInsertText[fieldNumber++]).setColumns(20);
-		personInsertText[fieldNumber] = new JTextField();
-		((JTextField) personInsertText[fieldNumber++]).setColumns(20);
-		personInsertText[fieldNumber] = new JTextField();
-		((JTextField) personInsertText[fieldNumber++]).setColumns(20);
 
-		for (int i = 0; i < personLabelStrings.length; i++) {
+		for (int i = 0; i < personLabelStrings.length-2; i++) {
 			panelLeftComponent[i] = new JLabel(personLabelStrings[i], JLabel.TRAILING);
 			((JLabel)panelLeftComponent[i]).setLabelFor(personInsertText[i]);
 			panel.add(panelLeftComponent[i]);
@@ -368,7 +363,7 @@ public class MainPanel extends JFrame {
 		personInsertDelete.addActionListener(listener);
 		panel.add(personInsertDelete);
 		
-		makeCompactGrid(panel, personLabelStrings.length+1, 2, GAP, GAP, GAP, GAP);
+		makeCompactGrid(panel, personLabelStrings.length-1, 2, GAP, GAP, GAP, GAP);
 		return panel;
 	}
 	private JComponent makeInsertStorePanel() {
@@ -388,8 +383,6 @@ public class MainPanel extends JFrame {
 		((JTextField) storeInsertText[fieldNumber++]).setColumns(20);
 		storeInsertText[fieldNumber] = new JTextField();
 		((JTextField) storeInsertText[fieldNumber++]).setColumns(20);
-//		storeInsertText[fieldNumber] = new JTextField();
-//		((JTextField) storeInsertText[fieldNumber++]).setColumns(20);
 
 		for (int i = 0; i < storeLabelStrings.length; i++) {
 			panelLeftComponent[i] = new JLabel(storeLabelStrings[i], JLabel.TRAILING);
@@ -561,7 +554,6 @@ public class MainPanel extends JFrame {
 		((JTextField) storeUpdateTextBefore[fieldNumber++]).setColumns(20);
 		storeUpdateTextBefore[fieldNumber] = new JTextField();
 		((JTextField) storeUpdateTextBefore[fieldNumber++]).setColumns(20);
-//		storeUpdateTextBefore[fieldNumber] = new JTextField();
 		for (int i = 0; i < storeLabelStrings.length; i++) {
 			panelLeftComponent1[i] = new JLabel(storeLabelStrings[i], JLabel.TRAILING);
 			((JLabel)panelLeftComponent1[i]).setLabelFor(storeUpdateTextBefore[i]);
@@ -587,7 +579,6 @@ public class MainPanel extends JFrame {
 		((JTextField) storeUpdateTextAfter[fieldNumber++]).setColumns(20);
 		storeUpdateTextAfter[fieldNumber] = new JTextField();
 		((JTextField) storeUpdateTextAfter[fieldNumber++]).setColumns(20);
-//		storeUpdateTextAfter[fieldNumber] = new JTextField();
 		for (int i = 0; i < storeLabelStrings.length; i++) {
 			panelLeftComponent2[i] = new JLabel(storeLabelStrings[i], JLabel.TRAILING);
 			((JLabel)panelLeftComponent2[i]).setLabelFor(storeUpdateTextAfter[i]);
@@ -692,7 +683,7 @@ public class MainPanel extends JFrame {
 				query+=";";
 				
 				System.out.println(query);
-				JDBC.executeSelect(query, JDBC.MENU);
+				JDBC.executeSelect(searchResultTable, query, JDBC.MENU);
 			}else if(obj == personSearchClear){
 				for(int i=0; i<personLabelStrings.length; i++) personSearchText[i].setText("");
 			}else if(obj == personSearchAccept){
@@ -743,7 +734,7 @@ public class MainPanel extends JFrame {
 				query+=";";
 				
 				System.out.println(query);
-				JDBC.executeSelect(query, JDBC.PERSON);
+				JDBC.executeSelect(searchResultTable, query, JDBC.PERSON);
 			}else if(obj == storeSearchClear){
 				for(int i=0; i<storeLabelStrings.length; i++) storeSearchText[i].setText("");
 			}else if(obj == storeSearchAccept){
@@ -793,43 +784,50 @@ public class MainPanel extends JFrame {
 				query+=";";
 
 				System.out.println(query);
-				JDBC.executeSelect(query, JDBC.STORE);
+				JDBC.executeSelect(searchResultTable, query, JDBC.STORE);
 			}else if(obj == menuInsertInsert){
 				String query= "insert into dbcourse_menu(menu_specid,menu_name,menu_id,menu_time,menu_cost) values (";
-				
+				String specid= Integer.toString(((int)Math.random()*9+1)*1000);
+				String name= menuInsertText[0].getText().toString();
+				String time= menuInsertText[1].getText().toString();
+				String cost= menuInsertText[2].getText().toString();
+				String menuid= specid.substring(0, 0)+Integer.toString((int)Math.random()*1000);
+				query+= (specid+","+name+","+menuid+","+time+","+cost);
+				query+= ");";
+				JDBC.executeUpdate(query);
 			}else if(obj == menuInsertDelete){
 				String query= "delete * from dbcourse_menu";
 				int start= -1;
 				
 				if(menuInsertText[0].getText().toString().length() > 0){
 					start= 0;
-					query += ",dbcourse_menu_spec where dbcourse_menu_spec.menu_specname=\'"+menuInsertText[0].getText().toString()
-							+"\' and dbcourse_menu_spec.menu_specid=dbcourse_menu.menu_specid";
+					query += " where dbcourse_menu.menu_name=\'"+menuInsertText[0].getText().toString()+"\'";
 				}
 				if(menuInsertText[1].getText().toString().length() > 0){
 					if(start == -1) query += " where ";
 					else query += " and ";
 					start= 1;
-					query += "dbcourse_menu.menu_name=\'"+menuInsertText[1].getText().toString()+"\'";
+					query += "dbcourse_menu.menu_time="+menuInsertText[1].getText().toString();
 				}
 				if(menuInsertText[2].getText().toString().length() > 0){
 					if(start == -1) query += " where ";
 					else query += " and ";
 					start= 2;
-					query += "dbcourse_menu.menu_time="+menuInsertText[2].getText().toString();
-				}
-				if(menuInsertText[3].getText().toString().length() > 0){
-					if(start == -1) query += " where ";
-					else query += " and ";
-					start= 3;
-					query += "dbcourse_menu.menu_cost="+menuInsertText[3].getText().toString();
+					query += "dbcourse_menu.menu_cost="+menuInsertText[2].getText().toString();
 				}
 				
 				query+=";";
 				System.out.println(query);
 				JDBC.executeQuery(query);
 			}else if(obj == personInsertInsert){
-				
+				String query= "insert into dbcourse_person(person_id,person_name,location_sid,person_phonenum) values (";
+				String specid= Integer.toString(((int)Math.random()*3+6)*10000+(int)Math.random()*10000);
+				String name= personInsertText[0].getText().toString();
+				String address= personInsertText[1].getText().toString();
+				String phonenum= personInsertText[2].getText().toString();
+				query+= (specid+","+name+",11111,"+phonenum);
+				query+= ");";
+				JDBC.executeUpdate(query);
 			}else if(obj == personInsertDelete){
 				String query= "delete * from dbcourse_person";
 				String[] text= new String[personLabelStrings.length];
@@ -880,7 +878,14 @@ public class MainPanel extends JFrame {
 				System.out.println(query);
 				JDBC.executeQuery(query);
 			}else if(obj == storeInsertInsert){
-				
+				String query= "insert into dbcourse_restaurant(restaurant_id,restaurant_name,location_sid) values (";
+				String specid= Integer.toString(((int)Math.random()*3+6)*10000+(int)Math.random()*10000);
+				String name= storeInsertText[1].getText().toString();
+				String address= storeInsertText[2].getText().toString();
+				String phonenum= storeInsertText[2].getText().toString();
+				query+= (specid+","+name+",11107");
+				query+= ");";
+				JDBC.executeUpdate(query);
 			}else if(obj == storeInsertDelete){
 				String query= "delete * from dbcourse_restaurant";
 				String[] text= new String[storeLabelStrings.length];
@@ -960,20 +965,16 @@ public class MainPanel extends JFrame {
 		try {
 			layout = (SpringLayout) parent.getLayout();
 		} catch (ClassCastException exc) {
-			System.err.println("The first argument to makeCompactGrid must use SpringLayout.");
+			exc.printStackTrace();
 			return;
 		}
 
 		Spring x = Spring.constant(initialX);
 		for (int c = 0; c < cols; c++) {
 			Spring width = Spring.constant(0);
+			for (int r = 0; r < rows; r++) width = Spring.max(width, getConstraintsForCell(r, c, parent, cols).getWidth());
 			for (int r = 0; r < rows; r++) {
-				width = Spring.max(width,
-						getConstraintsForCell(r, c, parent, cols).getWidth());
-			}
-			for (int r = 0; r < rows; r++) {
-				SpringLayout.Constraints constraints = getConstraintsForCell(r,
-						c, parent, cols);
+				SpringLayout.Constraints constraints = getConstraintsForCell(r, c, parent, cols);
 				constraints.setX(x);
 				constraints.setWidth(width);
 			}
@@ -983,13 +984,10 @@ public class MainPanel extends JFrame {
 		Spring y = Spring.constant(initialY);
 		for (int r = 0; r < rows; r++) {
 			Spring height = Spring.constant(0);
+			for (int c = 0; c < cols; c++)
+				height = Spring.max(height, getConstraintsForCell(r, c, parent, cols).getHeight());
 			for (int c = 0; c < cols; c++) {
-				height = Spring.max(height,
-						getConstraintsForCell(r, c, parent, cols).getHeight());
-			}
-			for (int c = 0; c < cols; c++) {
-				SpringLayout.Constraints constraints = getConstraintsForCell(r,
-						c, parent, cols);
+				SpringLayout.Constraints constraints = getConstraintsForCell(r, c, parent, cols);
 				constraints.setY(y);
 				constraints.setHeight(height);
 			}
@@ -1005,9 +1003,5 @@ public class MainPanel extends JFrame {
 		SpringLayout layout = (SpringLayout) parent.getLayout();
 		Component c = parent.getComponent(row * cols + col);
 		return layout.getConstraints(c);
-	}
-	
-	private void openJDBC(){
-		JDBC jdbc= new JDBC();
 	}
 }
