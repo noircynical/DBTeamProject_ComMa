@@ -1,0 +1,56 @@
+create database comma;
+
+use comma;
+
+(brand)
+create table dbcourse_brand(brand_id varchar(5), brand_name varchar(255), primary key(brand_id));
+
+(location)
+create table dbcourse_location(location_bid char(5), location_bname varchar(10), location_sid char(5), location_sname varchar(15), primary key(location_sid));
+alter table dbcourse_location modify location_bname varchar(20);
+
+(menu_spec)
+create table dbcourse_menu_spec(menu_specid char(4), menu_specname varchar(10), primary key(menu_specid));
+
+(menu)
+create table dbcourse_menu(menu_id varchar(4), menu_name varchar(20), menu_specid char(4), menu_time numeric(3,2), menu_cost int, foreign key(menu_specid) references dbcourse_menu_spec(menu_specid));
+
+(person)
+create table dbcourse_person(person_id varchar(5), person_name varchar(255), location_sid char(5), person_phonenum varchar(20), foreign key(location_sid) references dbcourse_location(location_sid));
+alter table dbcourse_person add primary key(person_id);
+
+(atmosphere)
+create table dbcourse_atmosphere(atmosphere_id varchar(3), atmosphere_name varchar(20), music varchar(20), lamp_color varchar(20), wallpaper_color varchar(20), primary key(atmosphere_id));
+
+(restaurant)
+create table dbcourse_restaurant(restaurant_id varchar(5), restaurant_name varchar(20), brand_id varchar(5), location_sid char(5), menu_specid char(4), telephone_num varchar(20), opendate date, selling int, atmosphere_id varchar(3), primary key(restaurant_id), foreign key(brand_id) references dbcourse_brand(brand_id), foreign key(location_sid) references dbcourse_location(location_sid), foreign key(menu_specid) references dbcourse_menu_spec(menu_specid), foreign key(atmosphere_id) references dbcourse_atmosphere(atmosphere_id));
+
+(position)
+create table dbcourse_position(position_name varchar(20), position_id char(5), working_hour int, restaurant_id varchar(5), working_hourwage int, primary key(position_id), foreign key(restaurant_id) references dbcourse_restaurant(restaurant_id));
+
+(evaluation)
+create table dbcourse_evaluation(rank char(1), evaluator_id varchar(50), restaurant_name varchar(20), restaurant_id varchar(5));
+
+(employee)
+create table dbcourse_employee(person_id varchar(5), employee_name varchar(20), employee_id varchar(5), position_id varchar(5), empoyee_salary numeric(5,2) not null, restaurant_id varchar(5), restaurant_name varchar(20), primary key(employee_id), foreign key(person_id) references dbcourse_person(person_id), foreign key(position_id) references dbcourse_position(position_id), foreign key(restaurant_id) references dbcourse_restaurant(restaurant_id));
+
+(customer)
+create table dbcourse_customer(person_name varchar(255), person_id varchar(5), customer_id varchar(5), restaurant_name varchar(20), restaurant_id varchar(5), location_sid char(5), foreign key(person_id) references dbcourse_person(person_id), primary key(customer_id), foreign key(restaurant_id) references dbcourse_restaurant(restaurant_id), foreign key(location_sid) references dbcourse_location(location_sid));
+
+(reservation)
+create table dbcourse_reservation(reservation_time datetime, reservation_id varchar(50), customer_name varchar(50), customer_id varchar(5), restaurant_id varchar(5), restaurant_name varchar(20), primary key(reservation_id), foreign key(customer_id) references dbcourse_customer(customer_id), foreign key(restaurant_id) references dbcourse_restaurant(restaurant_id));
+
+———————————create table
+
+load data infile '/Users/noirCynical/Workspace/DB_ComMa/data/brand.txt' into table dbcourse_brand;
+
+load data infile '/Users/noirCynical/Workspace/DB_ComMa/data/location.txt' into table dbcourse_location;
+
+load data infile '/Users/noirCynical/Workspace/DB_ComMa/data/menu_spec.txt' into table dbcourse_menu_spec;
+
+load data infile '/Users/noirCynical/Workspace/DB_ComMa/data/menu.txt' into table dbcourse_menu;
+
+load data infile '/Users/noirCynical/Workspace/DB_ComMa/data/person.txt' into table dbcourse_person;
+
+load data infile '/Users/noirCynical/Workspace/DB_ComMa/data/atmosphere.txt' into table dbcourse_atmosphere;
+

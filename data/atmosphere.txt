@@ -1,6 +1,6 @@
-101	polish	1	VIPS	classic	white	gold
-201	scary	2	PIZZAHUT	horror	red	black
-301	fresh	3	ASHLEY	country	yellow	green
-401	lovely	4	OUTBACK	ballad	orange	pink
-501	hot	12	JESSICA KITCHEN	hiphop	silver	navy
+101	polish	classic	white	gold
+201	scary	horror	red	black
+301	fresh	country	yellow	green
+401	lovely	ballad	orange	pink
+501	hot	hiphop	silver	navy
 601	enthusiastic	5	BENNIGANS	rock	blue	black
