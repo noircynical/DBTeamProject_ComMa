@@ -64,6 +64,7 @@ public class JDBC {
 			if (st.execute(query)) rs = st.getResultSet();
 
 			while (rs.next()) {
+				// 밑에줄 menu_name부분에 원하는 컬럼값 입력하면 출력댐!
 				String str= rs.getString("menu_name");
 				System.out.println(str);
 			}

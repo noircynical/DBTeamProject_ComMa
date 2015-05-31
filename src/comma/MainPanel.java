@@ -620,7 +620,9 @@ public class MainPanel extends JFrame {
 				
 				if(menuSearchText[0].getText().toString().length() > 0){
 					start= 0;
-					query += ",dbcourse_menu_spec where ";
+					query += ",dbcourse_menu_spec where "
+							+ "dbcourse_menu_spec.menu_specid=dbcourse_menu.menu_specid "
+							+ "and dbcourse_menu_spec.menu_specname=\'"+menuSearchText[0].getText().toString()+"\'";
 				}
 				if(menuSearchText[1].getText().toString().length() > 0){
 					if(start == -1) query += " where ";
@@ -646,35 +648,37 @@ public class MainPanel extends JFrame {
 			}else if(obj == personSearchClear){
 				for(int i=0; i<personLabelStrings.length; i++) personSearchText[i].setText("");
 			}else if(obj == personSearchAccept){
-				String query= "select * from dbcourse_person";
+				String query= "select * from dbcourse_person,dbcourse_employee,dbcourse_customer";
 				String[] text= new String[personLabelStrings.length];
 				int start= -1;
 				
 				if(personSearchText[0].getText().toString().length() > 0){
+					query += " where ";
 					start= 0;
-					query += ",dbcourse_menu_spec where ";
+					query += "dbcourse_person.person_name=\'"+personSearchText[0].getText().toString()+"\'";
 				}
 				if(personSearchText[1].getText().toString().length() > 0){
 					if(start == -1) query += " where ";
 					else query += " and ";
 					start= 1;
-					query += "dbcourse_menu.menu_specname=\'"+menuSearchText[1].getText().toString()+"\'";
+					query += "dbcourse_person.menu_specname=\'"+personSearchText[1].getText().toString()+"\'";
 				}
 				if(personSearchText[2].getText().toString().length() > 0){
 					if(start == -1) query += " where ";
 					else query += " and ";
 					start= 2;
-					query += "dbcourse_menu.menu_time="+menuSearchText[2].getText().toString();
+					query += "dbcourse_person.menu_time="+personSearchText[2].getText().toString();
 				}
 				if(personSearchText[3].getText().toString().length() > 0){
 					if(start == -1) query += " where ";
 					else query += " and ";
-					query += "dbcourse_menu.menu_cost="+menuSearchText[3].getText().toString();
+					start= 3;
+					query += "dbcourse_person.person_phonenum=\'"+personSearchText[3].getText().toString()+"\'";
 				}
 				if(personSearchText[4].getText().toString().length() > 0){
 					if(start == -1) query += " where ";
 					else query += " and ";
-					query += "dbcourse_menu.menu_cost="+menuSearchText[3].getText().toString();
+					query += "dbcourse_person.menu_cost="+personSearchText[4].getText().toString();
 				}
 				query+=";";
 				
@@ -683,7 +687,48 @@ public class MainPanel extends JFrame {
 			}else if(obj == storeSearchClear){
 				for(int i=0; i<storeLabelStrings.length; i++) storeSearchText[i].setText("");
 			}else if(obj == storeSearchAccept){
+				String query= "select * from dbcourse_brand,dbcourse_restaurant";
+				String[] text= new String[storeLabelStrings.length];
+				int start= -1;
 				
+				if(storeSearchText[0].getText().toString().length() > 0){
+					query += " where ";
+					start= 0;
+					query += "dbcourse_person.person_name=\'"+storeSearchText[0].getText().toString()+"\'";
+				}
+				if(storeSearchText[1].getText().toString().length() > 0){
+					if(start == -1) query += " where ";
+					else query += " and ";
+					start= 1;
+					query += "dbcourse_person.menu_specname=\'"+storeSearchText[1].getText().toString()+"\'";
+				}
+				if(storeSearchText[2].getText().toString().length() > 0){
+					if(start == -1) query += " where ";
+					else query += " and ";
+					start= 2;
+					query += "dbcourse_person.menu_time="+storeSearchText[2].getText().toString();
+				}
+				if(storeSearchText[3].getText().toString().length() > 0){
+					if(start == -1) query += " where ";
+					else query += " and ";
+					start= 3;
+					query += "dbcourse_person.person_phonenum=\'"+storeSearchText[3].getText().toString()+"\'";
+				}
+				if(storeSearchText[4].getText().toString().length() > 0){
+					if(start == -1) query += " where ";
+					else query += " and ";
+					start= 4;
+					query += "dbcourse_person.menu_cost="+storeSearchText[4].getText().toString();
+				}
+				if(storeSearchText[5].getText().toString().length() > 0){
+					if(start == -1) query += " where ";
+					else query += " and ";
+					query += "dbcourse_person.menu_cost="+storeSearchText[5].getText().toString();
+				}
+				query+=";";
+				
+				System.out.println(query);
+				JDBC.executeSelect(query);
 			}else if(obj == menuInsertInsert){
 				
 			}else if(obj == menuInsertDelete){
@@ -721,42 +766,6 @@ public class MainPanel extends JFrame {
 			
 		}
 	};
-
-//	private void createTopBar() {
-//		JMenuBar menubar = new JMenuBar();
-//
-//		JMenu file = new JMenu("Help");
-//		file.setMnemonic(KeyEvent.VK_F);
-//
-//		JMenuItem mMenualItem = new JMenuItem("Menual");
-//		mMenualItem.setMnemonic(KeyEvent.VK_E);
-//		mMenualItem.setToolTipText("Menual for this program");
-//		mMenualItem.addActionListener(new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent event) {
-//				System.exit(0);
-//			}
-//		});
-//		JMenuItem mInfoItem = new JMenuItem("Information");
-//		mMenualItem.setMnemonic(KeyEvent.VK_E);
-//		mMenualItem.setToolTipText("Information about Developer");
-//		mMenualItem.addActionListener(new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent event) {
-//				System.exit(0);
-//			}
-//		});
-//
-//		file.add(mMenualItem);
-//		file.add(mInfoItem);
-//		menubar.add(file);
-//
-//		setJMenuBar(menubar);
-//	}
-//
-//	private void createLayout() {
-//
-//	}
 
 	private void makeCompactGrid(Container parent, int rows, int cols, int initialX, int initialY, int xPad, int yPad) {
 		SpringLayout layout;
