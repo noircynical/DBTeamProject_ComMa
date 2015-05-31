@@ -54,3 +54,14 @@ load data infile '/Users/noirCynical/Workspace/DB_ComMa/data/person.txt' into ta
 
 load data infile '/Users/noirCynical/Workspace/DB_ComMa/data/atmosphere.txt' into table dbcourse_atmosphere;
 
+load data infile '/Users/noirCynical/Workspace/DB_ComMa/data/restaurant.txt' into table dbcourse_restaurant;
+
+load data infile '/Users/noirCynical/Workspace/DB_ComMa/data/position.txt' into table dbcourse_position;
+
+load data infile '/Users/noirCynical/Workspace/DB_ComMa/data/evaluation.txt' into table dbcourse_evaluation;
+
+load data infile '/Users/noirCynical/Workspace/DB_ComMa/data/customer.txt' into table dbcourse_customer;
+
+load data infile '/Users/noirCynical/Workspace/DB_ComMa/data/reservation.txt' into table dbcourse_reservation;
+
+-------------------------------------------- load data

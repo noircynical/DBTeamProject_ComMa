@@ -3,3 +3,7 @@
 3000	Japanese
 4000	Italian
 5000	Indian
+6000	American
+7000	Buffet
+8000	Fastfood
+9000	Bakery
