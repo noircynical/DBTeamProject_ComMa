@@ -612,68 +612,111 @@ public class MainPanel extends JFrame {
 			Object obj= e.getSource();
 			
 			if(obj == menuSearchClear){
-				menuSearchText[0].setText("");
-				menuSearchText[1].setText("");
-				menuSearchText[2].setText("");
-				menuSearchText[3].setText("");
+				for(int i=0; i<menuLabelStrings.length; i++) menuSearchText[i].setText("");
 			}else if(obj == menuSearchAccept){
+				String query= "select * from dbcourse_menu";
+				String[] text= new String[menuLabelStrings.length];
+				int start= -1;
+				
+				if(menuSearchText[0].getText().toString().length() > 0){
+					start= 0;
+					query += ",dbcourse_menu_spec where ";
+				}
+				if(menuSearchText[1].getText().toString().length() > 0){
+					if(start == -1) query += " where ";
+					else query += " and ";
+					start= 1;
+					query += "dbcourse_menu.menu_specname=\'"+menuSearchText[1].getText().toString()+"\'";
+				}
+				if(menuSearchText[2].getText().toString().length() > 0){
+					if(start == -1) query += " where ";
+					else query += " and ";
+					start= 2;
+					query += "dbcourse_menu.menu_time="+menuSearchText[2].getText().toString();
+				}
+				if(menuSearchText[3].getText().toString().length() > 0){
+					if(start == -1) query += " where ";
+					else query += " and ";
+					query += "dbcourse_menu.menu_cost="+menuSearchText[3].getText().toString();
+				}
+				query+=";";
+				
+				System.out.println(query);
+				JDBC.executeSelect(query);
 			}else if(obj == personSearchClear){
-				personSearchText[0].setText("");
-				personSearchText[1].setText("");
-				personSearchText[2].setText("");
-				personSearchText[3].setText("");
-				personSearchText[4].setText("");
+				for(int i=0; i<personLabelStrings.length; i++) personSearchText[i].setText("");
 			}else if(obj == personSearchAccept){
+				String query= "select * from dbcourse_person";
+				String[] text= new String[personLabelStrings.length];
+				int start= -1;
+				
+				if(personSearchText[0].getText().toString().length() > 0){
+					start= 0;
+					query += ",dbcourse_menu_spec where ";
+				}
+				if(personSearchText[1].getText().toString().length() > 0){
+					if(start == -1) query += " where ";
+					else query += " and ";
+					start= 1;
+					query += "dbcourse_menu.menu_specname=\'"+menuSearchText[1].getText().toString()+"\'";
+				}
+				if(personSearchText[2].getText().toString().length() > 0){
+					if(start == -1) query += " where ";
+					else query += " and ";
+					start= 2;
+					query += "dbcourse_menu.menu_time="+menuSearchText[2].getText().toString();
+				}
+				if(personSearchText[3].getText().toString().length() > 0){
+					if(start == -1) query += " where ";
+					else query += " and ";
+					query += "dbcourse_menu.menu_cost="+menuSearchText[3].getText().toString();
+				}
+				if(personSearchText[4].getText().toString().length() > 0){
+					if(start == -1) query += " where ";
+					else query += " and ";
+					query += "dbcourse_menu.menu_cost="+menuSearchText[3].getText().toString();
+				}
+				query+=";";
+				
+				System.out.println(query);
+				JDBC.executeSelect(query);
 			}else if(obj == storeSearchClear){
-				storeSearchText[0].setText("");
-				storeSearchText[1].setText("");
-				storeSearchText[2].setText("");
-				storeSearchText[3].setText("");
-				storeSearchText[4].setText("");
-				storeSearchText[5].setText("");
+				for(int i=0; i<storeLabelStrings.length; i++) storeSearchText[i].setText("");
 			}else if(obj == storeSearchAccept){
+				
 			}else if(obj == menuInsertInsert){
+				
 			}else if(obj == menuInsertDelete){
+				
 			}else if(obj == personInsertInsert){
+				
 			}else if(obj == personInsertDelete){
+				
 			}else if(obj == storeInsertInsert){
+				
 			}else if(obj == storeInsertDelete){
+				
 			}else if(obj == menuUpdateClear){
-				menuUpdateTextBefore[0].setText("");
-				menuUpdateTextBefore[1].setText("");
-				menuUpdateTextBefore[2].setText("");
-				menuUpdateTextBefore[3].setText("");
-				menuUpdateTextAfter[0].setText("");
-				menuUpdateTextAfter[1].setText("");
-				menuUpdateTextAfter[2].setText("");
-				menuUpdateTextAfter[3].setText("");
+				for(int i=0; i<menuLabelStrings.length; i++){
+					menuUpdateTextBefore[i].setText("");
+					menuUpdateTextAfter[i].setText("");
+				}
 			}else if(obj == menuUpdateAccept){
+				
 			}else if(obj == personUpdateClear){
-				personUpdateTextBefore[0].setText("");
-				personUpdateTextBefore[1].setText("");
-				personUpdateTextBefore[2].setText("");
-				personUpdateTextBefore[3].setText("");
-				personUpdateTextBefore[4].setText("");
-				personUpdateTextAfter[0].setText("");
-				personUpdateTextAfter[1].setText("");
-				personUpdateTextAfter[2].setText("");
-				personUpdateTextAfter[3].setText("");
-				personUpdateTextAfter[4].setText("");
+				for(int i=0; i<personLabelStrings.length; i++){
+					personUpdateTextBefore[i].setText("");
+					personUpdateTextAfter[i].setText("");
+				}
 			}else if(obj == personUpdateAccept){
+				
 			}else if(obj == storeUpdateClear){
-				storeUpdateTextBefore[0].setText("");
-				storeUpdateTextBefore[1].setText("");
-				storeUpdateTextBefore[2].setText("");
-				storeUpdateTextBefore[3].setText("");
-				storeUpdateTextBefore[4].setText("");
-				storeUpdateTextBefore[5].setText("");
-				storeUpdateTextAfter[0].setText("");
-				storeUpdateTextAfter[1].setText("");
-				storeUpdateTextAfter[2].setText("");
-				storeUpdateTextAfter[3].setText("");
-				storeUpdateTextAfter[4].setText("");
-				storeUpdateTextAfter[5].setText("");
+				for(int i=0; i<storeLabelStrings.length; i++){
+					storeUpdateTextBefore[i].setText("");
+					storeUpdateTextAfter[i].setText("");
+				}
 			}else if(obj == storeUpdateAccept){
+				
 			}
 			
 		}
