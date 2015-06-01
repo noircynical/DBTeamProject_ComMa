@@ -48,11 +48,11 @@ public class MainPanel extends JFrame {
 	public JTextField[] menuInsertText= new JTextField[3];
 	public JTextField[] personInsertText= new JTextField[3];
 	public JTextField[] storeInsertText= new JTextField[5];
-	public JTextField[] menuUpdateTextBefore= new JTextField[4];
-	public JTextField[] storeUpdateTextBefore= new JTextField[5];
+	public JTextField[] menuUpdateTextBefore= new JTextField[3];
+	public JTextField[] storeUpdateTextBefore= new JTextField[3];
 	public JTextField[] personUpdateTextBefore= new JTextField[5];
-	public JTextField[] menuUpdateTextAfter= new JTextField[4];
-	public JTextField[] personUpdateTextAfter= new JTextField[5];
+	public JTextField[] menuUpdateTextAfter= new JTextField[3];
+	public JTextField[] personUpdateTextAfter= new JTextField[3];
 	public JTextField[] storeUpdateTextAfter= new JTextField[5];
 	
 	public JButton menuSearchClear, menuSearchAccept;
@@ -425,7 +425,7 @@ public class MainPanel extends JFrame {
 		
 		JPanel inner1= new JPanel(new SpringLayout());
 		inner1.setBorder(BorderFactory.createTitledBorder("Before"));
-		menuUpdateTextBefore= new JTextField[menuLabelStrings.length];
+		menuUpdateTextBefore= new JTextField[menuLabelStrings.length-1];
 		JComponent[] panelLeftComponent1= new JComponent[menuLabelStrings.length];
 		int fieldNumber = 0;
 		menuUpdateTextBefore[fieldNumber] = new JTextField();
@@ -434,21 +434,20 @@ public class MainPanel extends JFrame {
 		((JTextField) menuUpdateTextBefore[fieldNumber++]).setColumns(20);
 		menuUpdateTextBefore[fieldNumber] = new JTextField();
 		((JTextField) menuUpdateTextBefore[fieldNumber++]).setColumns(20);
-		menuUpdateTextBefore[fieldNumber] = new JTextField();
-		for (int i = 0; i < menuLabelStrings.length; i++) {
-			panelLeftComponent1[i] = new JLabel(menuLabelStrings[i], JLabel.TRAILING);
-			((JLabel)panelLeftComponent1[i]).setLabelFor(menuUpdateTextBefore[i]);
-			inner1.add(panelLeftComponent1[i]);
-			inner1.add(menuUpdateTextBefore[i]);
+		for (int i = 1; i < menuLabelStrings.length; i++) {
+			panelLeftComponent1[i-1] = new JLabel(menuLabelStrings[i], JLabel.TRAILING);
+			((JLabel)panelLeftComponent1[i-1]).setLabelFor(menuUpdateTextBefore[i-1]);
+			inner1.add(panelLeftComponent1[i-1]);
+			inner1.add(menuUpdateTextBefore[i-1]);
 		}
 		inner1.add(new JLabel());
 		inner1.add(new JLabel());
-		makeCompactGrid(inner1, menuLabelStrings.length+1, 2, GAP, GAP, GAP, GAP);
+		makeCompactGrid(inner1, menuLabelStrings.length, 2, GAP, GAP, GAP, GAP);
 		
 		JPanel inner2= new JPanel(new SpringLayout());
 		inner2.setBorder(BorderFactory.createTitledBorder("After"));
-		menuUpdateTextAfter= new JTextField[menuLabelStrings.length];
-		JComponent[] panelLeftComponent2= new JComponent[menuLabelStrings.length];
+		menuUpdateTextAfter= new JTextField[menuLabelStrings.length-1];
+		JComponent[] panelLeftComponent2= new JComponent[menuLabelStrings.length-1];
 		fieldNumber = 0;
 		menuUpdateTextAfter[fieldNumber] = new JTextField();
 		((JTextField) menuUpdateTextAfter[fieldNumber++]).setColumns(20);
@@ -456,12 +455,11 @@ public class MainPanel extends JFrame {
 		((JTextField) menuUpdateTextAfter[fieldNumber++]).setColumns(20);
 		menuUpdateTextAfter[fieldNumber] = new JTextField();
 		((JTextField) menuUpdateTextAfter[fieldNumber++]).setColumns(20);
-		menuUpdateTextAfter[fieldNumber] = new JTextField();
-		for (int i = 0; i < menuLabelStrings.length; i++) {
-			panelLeftComponent2[i] = new JLabel(menuLabelStrings[i], JLabel.TRAILING);
-			((JLabel)panelLeftComponent2[i]).setLabelFor(menuUpdateTextAfter[i]);
-			inner2.add(panelLeftComponent2[i]);
-			inner2.add(menuUpdateTextAfter[i]);
+		for (int i = 1; i < menuLabelStrings.length; i++) {
+			panelLeftComponent2[i-1] = new JLabel(menuLabelStrings[i], JLabel.TRAILING);
+			((JLabel)panelLeftComponent2[i-1]).setLabelFor(menuUpdateTextAfter[i-1]);
+			inner2.add(panelLeftComponent2[i-1]);
+			inner2.add(menuUpdateTextAfter[i-1]);
 		}
 		menuUpdateClear= new JButton("Clear");
 		menuUpdateClear.addActionListener(listener);
@@ -469,7 +467,7 @@ public class MainPanel extends JFrame {
 		menuUpdateAccept= new JButton("Update");
 		menuUpdateAccept.addActionListener(listener);
 		inner2.add(menuUpdateAccept);
-		makeCompactGrid(inner2, menuLabelStrings.length+1, 2, GAP, GAP, GAP, GAP);
+		makeCompactGrid(inner2, menuLabelStrings.length, 2, GAP, GAP, GAP, GAP);
 		
 		panel.add(inner1);
 		panel.add(inner2);
@@ -481,8 +479,8 @@ public class MainPanel extends JFrame {
 		
 		JPanel inner1= new JPanel(new SpringLayout());
 		inner1.setBorder(BorderFactory.createTitledBorder("Before"));
-		personUpdateTextBefore= new JTextField[personLabelStrings.length];
-		JComponent[] panelLeftComponent1= new JComponent[personLabelStrings.length];
+		personUpdateTextBefore= new JTextField[personLabelStrings.length-2];
+		JComponent[] panelLeftComponent1= new JComponent[personLabelStrings.length-2];
 		int fieldNumber = 0;
 		personUpdateTextBefore[fieldNumber] = new JTextField();
 		((JTextField) personUpdateTextBefore[fieldNumber++]).setColumns(20);
@@ -490,10 +488,7 @@ public class MainPanel extends JFrame {
 		((JTextField) personUpdateTextBefore[fieldNumber++]).setColumns(20);
 		personUpdateTextBefore[fieldNumber] = new JTextField();
 		((JTextField) personUpdateTextBefore[fieldNumber++]).setColumns(20);
-		personUpdateTextBefore[fieldNumber] = new JTextField();
-		((JTextField) personUpdateTextBefore[fieldNumber++]).setColumns(20);
-		personUpdateTextBefore[fieldNumber] = new JTextField();
-		for (int i = 0; i < personLabelStrings.length; i++) {
+		for (int i = 0; i < personLabelStrings.length-2; i++) {
 			panelLeftComponent1[i] = new JLabel(personLabelStrings[i], JLabel.TRAILING);
 			((JLabel)panelLeftComponent1[i]).setLabelFor(personUpdateTextBefore[i]);
 			inner1.add(panelLeftComponent1[i]);
@@ -501,12 +496,12 @@ public class MainPanel extends JFrame {
 		}
 		inner1.add(new JLabel());
 		inner1.add(new JLabel());
-		makeCompactGrid(inner1, personLabelStrings.length+1, 2, GAP, GAP, GAP, GAP);
+		makeCompactGrid(inner1, personLabelStrings.length-1, 2, GAP, GAP, GAP, GAP);
 		
 		JPanel inner2= new JPanel(new SpringLayout());
 		inner2.setBorder(BorderFactory.createTitledBorder("After"));
-		personUpdateTextAfter= new JTextField[personLabelStrings.length];
-		JComponent[] panelLeftComponent2= new JComponent[personLabelStrings.length];
+		personUpdateTextAfter= new JTextField[personLabelStrings.length-2];
+		JComponent[] panelLeftComponent2= new JComponent[personLabelStrings.length-2];
 		fieldNumber = 0;
 		personUpdateTextAfter[fieldNumber] = new JTextField();
 		((JTextField) personUpdateTextAfter[fieldNumber++]).setColumns(20);
@@ -514,10 +509,7 @@ public class MainPanel extends JFrame {
 		((JTextField) personUpdateTextAfter[fieldNumber++]).setColumns(20);
 		personUpdateTextAfter[fieldNumber] = new JTextField();
 		((JTextField) personUpdateTextAfter[fieldNumber++]).setColumns(20);
-		personUpdateTextAfter[fieldNumber] = new JTextField();
-		((JTextField) personUpdateTextAfter[fieldNumber++]).setColumns(20);
-		personUpdateTextAfter[fieldNumber] = new JTextField();
-		for (int i = 0; i < personLabelStrings.length; i++) {
+		for (int i = 0; i < personLabelStrings.length-2; i++) {
 			panelLeftComponent2[i] = new JLabel(personLabelStrings[i], JLabel.TRAILING);
 			((JLabel)panelLeftComponent2[i]).setLabelFor(personUpdateTextAfter[i]);
 			inner2.add(panelLeftComponent2[i]);
@@ -529,7 +521,7 @@ public class MainPanel extends JFrame {
 		personUpdateAccept= new JButton("Update");
 		personUpdateAccept.addActionListener(listener);
 		inner2.add(personUpdateAccept);
-		makeCompactGrid(inner2, personLabelStrings.length+1, 2, GAP, GAP, GAP, GAP);
+		makeCompactGrid(inner2, personLabelStrings.length-1, 2, GAP, GAP, GAP, GAP);
 		
 		panel.add(inner1);
 		panel.add(inner2);
@@ -603,7 +595,7 @@ public class MainPanel extends JFrame {
 		panel.setLayout(new GridLayout(1, 1, 0, 0));
 
 		JTabbedPane mCondPane = new JTabbedPane();
-		JComponent panel1 = makeTextPanel("Menual");
+		JComponent panel1 = makeManualPanel();
 		JComponent panel2 = makeInformationPanel();
 
 		mCondPane.addTab("Menual", null, panel1, "Menual for this program");
@@ -614,26 +606,51 @@ public class MainPanel extends JFrame {
 
 		return panel;
 	}
-
+	
+	private JComponent makeManualPanel(){
+		JPanel panel= new JPanel();
+		panel.setLayout(new GridLayout(1,1,0,0));
+		
+		JLabel label= new JLabel();
+		
+		String str= "<html>(you can use it with some conditions.)<br>"
+				+ "1. Search<br>"
+				+ "You can find information about 'Menu', 'Person', 'Store' which satisfy the input conditions.<br>"
+				+ "- When you write all conditions that you want, click the button 'Search'. <br>Then the program shows the entities which are matched the conditions.<br>"
+				+ "- The button 'Clear' means delete all conditions of a section which you clicked.<br>"
+				+ "e.g ] If you click the button 'Clear' of Menu section, the conditions of Menu will be deleted.<br>"
+				+ "- You can search for Menu, Person, Store at a time. <br>The program will respectively indicates the results.<br>"
+				+ "2. Insert& Delete<br>"
+				+ "You can insert or delete the entities of Menu, person, store repectively, which satisfy the input conditions.<br>"
+				+ "Insert<br>"
+				+ "- When you write all conditions that you want to insert, click the button 'Insert'.<br> Then the program insert what you wrote.<br>"
+				+ "Delete<br>"
+				+ "- When you write all conditions that you want to delete, click the button 'Delete'. <br>Then the program delete the entities which are satisfy the conditions.<br>"
+				+ "3. Update<br>"
+				+ "You can update the entities of Menu, person, store repectively, which satisfy the input conditions.<br>"
+				+ "- Write the conditions into Before_view, to find what you want to update. <br>Then write the conditions into After_view, to change the conditions of found entities.<br>"
+				+ "4. HELP<br>"
+				+ "- Menual : How to use the program<br>"
+				+ "- Information : about Comma<br>"
+				+ "5.OTHER TIP<br>"
+				+ "- For all sections, you can write just some conditions to use the program.</html>";
+		label.setText(str);
+		panel.add(label);
+		return panel;
+	}
 	private JComponent makeInformationPanel() {
 		JPanel panel = new JPanel();
-		panel.setLayout(new FlowLayout());
-
-		JLabel label1 = new JLabel("Username :", JLabel.RIGHT);
-		JLabel label2 = new JLabel("Password :", JLabel.RIGHT);
-		JLabel label3 = new JLabel("Confirm Password :", JLabel.RIGHT);
-		JLabel label4 = new JLabel("Remember Me!", JLabel.LEFT);
-		JLabel label5 = new JLabel("Hello.", JLabel.CENTER);
-
-		label5.setVerticalAlignment(JLabel.TOP);
-		label5.setToolTipText("A tool tip with me!");
-
-		panel.add(label1);
-		panel.add(label2);
-		panel.add(label3);
-		panel.add(label4);
-		panel.add(label5);
-
+		panel.setLayout(new GridLayout(1,1,0,0));
+		
+		JLabel label= new JLabel();
+		String str= "<html>Team Name : Team - Com,Ma<br>"
+				+"Team-Leader: 1215009, Jaeun-Ku<br>"
+				+"Team-Mate  : 1202046, Nayun-Seo<br>"
+				+"Team-Mate  : 1202051, Yeonsoo-Song<br>"
+				+"Team-Mate  : 1215118, Yuyung-Cha<br>"
+				+"Team-Mate  : 1315012, Minjee-Kim<br>";
+		label.setText(str);
+		panel.add(label);
 		return panel;
 	}
 
@@ -932,7 +949,6 @@ public class MainPanel extends JFrame {
 				}
 				query+=";";
 
-				System.out.println(query);
 				JDBC.executeQuery(query);
 			}else if(obj == menuUpdateClear){
 				for(int i=0; i<menuLabelStrings.length; i++){
@@ -941,13 +957,80 @@ public class MainPanel extends JFrame {
 				}
 			}else if(obj == menuUpdateAccept){
 				String query= "update dbcourse_menu set ";
+				
+				String inner= " where (select * from dbcourse_menu";
+				int start= -1;
+				if(menuUpdateTextBefore[0].getText().toString().length() > 0){
+					start= 0;
+					inner += " where dbcourse_menu.menu_specname=\'"+menuUpdateTextBefore[1].getText().toString()+"\'";
+				}
+				if(menuUpdateTextBefore[1].getText().toString().length() > 0){
+					if(start == -1) inner += " where ";
+					else inner += " and ";
+					start= 1;
+					inner += "dbcourse_menu.menu_time="+menuUpdateTextBefore[1].getText().toString();
+				}
+				if(menuUpdateTextBefore[2].getText().toString().length() > 0){
+					if(start == -1) inner += " where ";
+					else inner += " and ";
+					inner += "dbcourse_menu.menu_cost="+menuUpdateTextBefore[2].getText().toString();
+				}
+				inner+=");";
+				
+				String set="";
+				start= -1;
+				if(menuUpdateTextAfter[0].getText().toString().length() > 0){
+					start= 0;
+					set+= "menu_name=\'"+menuUpdateTextAfter[0].getText().toString()+"\'";
+				}
+				if(menuUpdateTextAfter[1].getText().toString().length() > 0){
+					if(start != -1) set += " and ";
+					start= 1;
+					set += "menu_time="+menuUpdateTextAfter[1].getText().toString();
+				}
+				if(menuUpdateTextAfter[2].getText().toString().length() > 0){
+					if(start != -1) set += " and ";
+					set += "menu_cost="+menuUpdateTextAfter[2].getText().toString()+" ";
+				}
+				query += set+inner;
+				
+				System.out.println(query);
+				JDBC.executeUpdate(query);
 			}else if(obj == personUpdateClear){
 				for(int i=0; i<personLabelStrings.length; i++){
 					personUpdateTextBefore[i].setText("");
 					personUpdateTextAfter[i].setText("");
 				}
 			}else if(obj == personUpdateAccept){
+				String query= "update dbcourse_person set ";
 				
+				String inner= " where (select * from dbcourse_person";
+				int start= -1;
+				if(personUpdateTextBefore[0].getText().toString().length() > 0){
+					start= 0;
+					inner += " where dbcourse_person.person_name=\'"+personUpdateTextBefore[0].getText().toString()+"\'";
+				}
+				if(personUpdateTextBefore[2].getText().toString().length() > 0){
+					if(start == -1) inner += " where ";
+					else inner += " and ";
+					inner += "dbcourse_person.person_phonenum=\'"+personUpdateTextBefore[2].getText().toString()+"\'";
+				}
+				inner+=");";
+				
+				String set="";
+				start= -1;
+				if(personUpdateTextAfter[0].getText().toString().length() > 0){
+					start= 0;
+					set+= "person_name=\'"+personUpdateTextAfter[0].getText().toString()+"\'";
+				}
+				if(personUpdateTextAfter[2].getText().toString().length() > 0){
+					if(start != -1) set += " and ";
+					set += "person_phonenum=\'"+menuUpdateTextAfter[2].getText().toString()+"\' ";
+				}
+				query += set+inner;
+				
+				System.out.println(query);
+				JDBC.executeUpdate(query);
 			}else if(obj == storeUpdateClear){
 				for(int i=0; i<storeLabelStrings.length; i++){
 					storeUpdateTextBefore[i].setText("");
