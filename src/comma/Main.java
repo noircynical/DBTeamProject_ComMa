@@ -5,16 +5,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-
 public class Main {
+	// Class Main : Start the program
 	private static MainPanel mPanel= null;
 	
 	public static void main(String[] args) {
+		// create main display
 		if(mPanel == null) mPanel= new MainPanel();
 		mPanel.setVisible(true);
-	}
-	
-	public static void callMain(){
-		System.out.println("");
 	}
 }

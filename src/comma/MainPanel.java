@@ -35,11 +35,14 @@ import javax.swing.SpringLayout;
 import javax.swing.table.DefaultTableModel;
 
 public class MainPanel extends JFrame {
+	// Class MainPanel : Display the ui, execute query;
+	
 	final static int GAP = 10;
 	public String[] menuLabelStrings = { "Menu Spec", "Menu Name", "Cooking Time", "Cost"};
 	public String[] personLabelStrings = { "Name", "Address", "Phone Number", "Position", "Restaurant" };
 	public String[] storeLabelStrings = { "Brand Name", "Restaurant Name", "Location", "Menu Spec", "Atmosphere" };
 
+	// graphic interface
 	private JPanel mPanel = null;
 	
 	public JTextField[] menuSearchText= new JTextField[4];
@@ -104,6 +107,7 @@ public class MainPanel extends JFrame {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 	
+	// create the menu bar on the top
 	private void createMenuBar() {
         JMenuBar menubar = new JMenuBar();
 
@@ -135,17 +139,18 @@ public class MainPanel extends JFrame {
             @Override
             public void actionPerformed(ActionEvent event) {
             	// drop the table of database 'comma'
-            	JDBC.executeDropTable("drop table dbcourse_brand;");
-            	JDBC.executeDropTable("drop table dbcourse_location;");
-            	JDBC.executeDropTable("drop table dbcourse_menu_spec;");
-            	JDBC.executeDropTable("drop table dbcourse_menu;");
-            	JDBC.executeDropTable("drop table dbcourse_person;");
-            	JDBC.executeDropTable("drop table dbcourse_atmosphere;");
-            	JDBC.executeDropTable("drop table dbcourse_restaurant;");
-            	JDBC.executeDropTable("drop table dbcourse_position;");
-            	JDBC.executeDropTable("drop table dbcourse_evaluation;");
-            	JDBC.executeDropTable("drop table dbcourse_customer;");
             	JDBC.executeDropTable("drop table dbcourse_reservation;");
+            	JDBC.executeDropTable("drop table dbcourse_customer;");
+            	JDBC.executeDropTable("drop table dbcourse_evaluation;");
+            	JDBC.executeDropTable("drop table dbcourse_employee;");
+            	JDBC.executeDropTable("drop table dbcourse_position;");
+            	JDBC.executeDropTable("drop table dbcourse_restaurant;");
+            	JDBC.executeDropTable("drop table dbcourse_atmosphere;");
+            	JDBC.executeDropTable("drop table dbcourse_person;");
+            	JDBC.executeDropTable("drop table dbcourse_menu;");
+            	JDBC.executeDropTable("drop table dbcourse_menu_spec;");
+            	JDBC.executeDropTable("drop table dbcourse_location;");
+            	JDBC.executeDropTable("drop table dbcourse_brand;");
             }
         });
 
@@ -176,12 +181,6 @@ public class MainPanel extends JFrame {
 		
 		panel.add(scrPane);
 		return panel;
-	}
-	
-	private DefaultTableModel makeTableModel(String[] labels){
-		Vector<String> temp= new Vector<String>();
-		for(int i=0; i<labels.length; i++) temp.add(labels[i]);
-		return new DefaultTableModel(temp, 0);
 	}
 
 	private JComponent makeSearchMenuPanel() {
@@ -653,15 +652,6 @@ public class MainPanel extends JFrame {
 		panel.add(label);
 		return panel;
 	}
-
-	protected JComponent makeTextPanel(String text) {
-		JPanel panel = new JPanel(false);
-		JLabel filler = new JLabel(text);
-		filler.setHorizontalAlignment(JLabel.CENTER);
-		panel.setLayout(new GridLayout(1, 1));
-		panel.add(filler);
-		return panel;
-	}
 	
 	ActionListener listener= new ActionListener(){
 		public void actionPerformed(ActionEvent e){ 
@@ -761,8 +751,7 @@ public class MainPanel extends JFrame {
 
 				if(storeSearchText[0].getText().toString().length() > 0){
 					start= 0;
-					query += ",dbcourse_brand where dbcourse_brand.brand_name=\'"+storeSearchText[0].getText().toString()
-							+"\' and dbcourse_brand.brand_id=dbcourse_restaurant.brand_id";
+					query += " where dbcourse_restaurant.brand_name=\'"+storeSearchText[0].getText().toString()+"\'";
 				}
 				if(storeSearchText[1].getText().toString().length() > 0){
 					if(start == -1) query += " where ";
@@ -805,15 +794,17 @@ public class MainPanel extends JFrame {
 			}else if(obj == menuInsertInsert){
 				String query= "insert into dbcourse_menu(menu_specid,menu_name,menu_id,menu_time,menu_cost) values (";
 				String specid= Integer.toString(((int)Math.random()*9+1)*1000);
-				String name= menuInsertText[0].getText().toString();
+				String name= "\'"+menuInsertText[0].getText().toString()+"\'";
 				String time= menuInsertText[1].getText().toString();
 				String cost= menuInsertText[2].getText().toString();
 				String menuid= specid.substring(0, 0)+Integer.toString((int)Math.random()*1000);
 				query+= (specid+","+name+","+menuid+","+time+","+cost);
 				query+= ");";
+				
+				System.out.println(query);
 				JDBC.executeUpdate(query);
 			}else if(obj == menuInsertDelete){
-				String query= "delete * from dbcourse_menu";
+				String query= "delete from dbcourse_menu";
 				int start= -1;
 				
 				if(menuInsertText[0].getText().toString().length() > 0){
@@ -835,18 +826,18 @@ public class MainPanel extends JFrame {
 				
 				query+=";";
 				System.out.println(query);
-				JDBC.executeQuery(query);
+				JDBC.executeUpdate(query);
 			}else if(obj == personInsertInsert){
 				String query= "insert into dbcourse_person(person_id,person_name,location_sid,person_phonenum) values (";
 				String specid= Integer.toString(((int)Math.random()*3+6)*10000+(int)Math.random()*10000);
-				String name= personInsertText[0].getText().toString();
+				String name= "\'"+personInsertText[0].getText().toString()+"\'";
 				String address= personInsertText[1].getText().toString();
-				String phonenum= personInsertText[2].getText().toString();
+				String phonenum= "\'"+personInsertText[2].getText().toString()+"\'";
 				query+= (specid+","+name+",11111,"+phonenum);
 				query+= ");";
 				JDBC.executeUpdate(query);
 			}else if(obj == personInsertDelete){
-				String query= "delete * from dbcourse_person";
+				String query= "delete from dbcourse_person";
 				String[] text= new String[personLabelStrings.length];
 				int start= -1;
 
@@ -893,25 +884,26 @@ public class MainPanel extends JFrame {
 				query+=";";
 				
 				System.out.println(query);
-				JDBC.executeQuery(query);
+				JDBC.executeUpdate(query);
 			}else if(obj == storeInsertInsert){
-				String query= "insert into dbcourse_restaurant(restaurant_id,restaurant_name,location_sid) values (";
+				String query= "insert into dbcourse_restaurant(brand_name,restaurant_id,restaurant_name,location_sid) values (";
 				String specid= Integer.toString(((int)Math.random()*3+6)*10000+(int)Math.random()*10000);
-				String name= storeInsertText[1].getText().toString();
+				String brand= "\'"+storeInsertText[0].getText().toString()+"\'";
+				String name= "\'"+storeInsertText[1].getText().toString()+"\'";
 				String address= storeInsertText[2].getText().toString();
-				String phonenum= storeInsertText[2].getText().toString();
-				query+= (specid+","+name+",11107");
+				query+= (brand+","+specid+","+name+",11107");
 				query+= ");";
+				
+				System.out.println(query);
 				JDBC.executeUpdate(query);
 			}else if(obj == storeInsertDelete){
-				String query= "delete * from dbcourse_restaurant";
+				String query= "delete from dbcourse_restaurant";
 				String[] text= new String[storeLabelStrings.length];
 				int start= -1;
 
 				if(storeInsertText[0].getText().toString().length() > 0){
 					start= 0;
-					query += ",dbcourse_brand where dbcourse_brand.brand_name=\'"+storeInsertText[0].getText().toString()
-							+"\' and dbcourse_brand.brand_id=dbcourse_restaurant.brand_id";
+					query += " where dbcourse_restaurant.brand_name=\'"+storeInsertText[0].getText().toString()+"\'";
 				}
 				if(storeInsertText[1].getText().toString().length() > 0){
 					if(start == -1) query += " where ";
@@ -949,7 +941,8 @@ public class MainPanel extends JFrame {
 				}
 				query+=";";
 
-				JDBC.executeQuery(query);
+				System.out.println(query);
+				JDBC.executeUpdate(query);
 			}else if(obj == menuUpdateClear){
 				for(int i=0; i<menuLabelStrings.length; i++){
 					menuUpdateTextBefore[i].setText("");
@@ -1025,7 +1018,7 @@ public class MainPanel extends JFrame {
 				}
 				if(personUpdateTextAfter[2].getText().toString().length() > 0){
 					if(start != -1) set += " and ";
-					set += "person_phonenum=\'"+menuUpdateTextAfter[2].getText().toString()+"\' ";
+					set += "person_phonenum=\'"+personUpdateTextAfter[2].getText().toString()+"\' ";
 				}
 				query += set+inner;
 				
