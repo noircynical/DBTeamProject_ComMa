@@ -10,6 +10,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 public class JDBC {
+	public static Configuration conf= new Configuration();
 	public static int MENU= 0;
 	public static int PERSON= 1;
 	public static int STORE= 2;
@@ -17,7 +18,7 @@ public class JDBC {
 	public static void executeInitiate(String query){
 		try {
 			Connection con = null;
-			con = DriverManager.getConnection("jdbc:mysql://localhost", "root", "dark1902");
+			con = DriverManager.getConnection(conf.DB_CONNECTION, conf.DB_USER, conf.DB_PASSWORD);
 			Statement st = con.createStatement();
 			st.executeUpdate(query);
 		} catch (SQLException sqex) {
@@ -28,7 +29,7 @@ public class JDBC {
 	public static void executeUpdate(String query){
 		try {
 			Connection con = null;
-			con = DriverManager.getConnection("jdbc:mysql://localhost", "root", "dark1902");
+			con = DriverManager.getConnection(conf.DB_CONNECTION, conf.DB_USER, conf.DB_PASSWORD);
 			Statement st = con.createStatement();
 			st.executeQuery("use comma;");
 			st.executeUpdate(query);
@@ -40,7 +41,7 @@ public class JDBC {
 	public static void executeDropTable(String query){
 		try {
 			Connection con = null;
-			con = DriverManager.getConnection("jdbc:mysql://localhost", "root", "dark1902");
+			con = DriverManager.getConnection(conf.DB_CONNECTION, conf.DB_USER, conf.DB_PASSWORD);
 			Statement st = con.createStatement();
 			st.executeQuery("use comma;");
 			st.executeUpdate("SET foreign_key_checks = 0;");
@@ -55,7 +56,7 @@ public class JDBC {
 	public static void executeQuery(String query){
 		try {
 			Connection con = null;
-			con = DriverManager.getConnection("jdbc:mysql://localhost", "root", "dark1902");
+			con = DriverManager.getConnection(conf.DB_CONNECTION, conf.DB_USER, conf.DB_PASSWORD);
 			Statement st = con.createStatement();
 			st.executeQuery("use comma;");
 			st.executeQuery(query);
@@ -76,8 +77,7 @@ public class JDBC {
 		try {
 			Connection con = null;
 
-			con = DriverManager.getConnection("jdbc:mysql://localhost",
-					"root", "dark1902");
+			con = DriverManager.getConnection(conf.DB_CONNECTION, conf.DB_USER, conf.DB_PASSWORD);
 			Statement st = con.createStatement();
 			st.executeQuery("use comma;");
 			ResultSet rs = st.executeQuery(query);
@@ -126,8 +126,7 @@ public class JDBC {
 	public static void executeInsertMenu(String query, String menu){
 		try {
 			Connection con = null;
-
-			con = DriverManager.getConnection("jdbc:mysql://localhost", "root", "dark1902");
+			con = DriverManager.getConnection(conf.DB_CONNECTION, conf.DB_USER, conf.DB_PASSWORD);
 			Statement st = con.createStatement();
 			st.executeQuery("use comma;");
 			ResultSet rs=st.executeQuery("select menu_specid from dbcourse_menu_spec where dbcourse_menu_spec.menu_specname=\'"+menu+"\'");

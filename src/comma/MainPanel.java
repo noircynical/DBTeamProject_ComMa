@@ -890,7 +890,6 @@ public class MainPanel extends JFrame {
 				String specid= Integer.toString(((int)Math.random()*3+6)*10000+(int)Math.random()*10000);
 				String brand= "\'"+storeInsertText[0].getText().toString()+"\'";
 				String name= "\'"+storeInsertText[1].getText().toString()+"\'";
-				String address= storeInsertText[2].getText().toString();
 				query+= (brand+","+specid+","+name+",11107");
 				query+= ");";
 				
