@@ -10,7 +10,7 @@ public class Configuration {
 	public static String DB_PASSWORD = null;
 
 	public Configuration() {
-		File configuration = new File("C:/DBCOURSE/configuration1215009.txt");
+		File configuration = new File("/Users/apple/Downloads/comma/configuration1215009.txt");
 		try {
 			Scanner in = new Scanner(configuration);
 			DB_CONNECTION = in.nextLine();

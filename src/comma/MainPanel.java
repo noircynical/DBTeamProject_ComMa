@@ -122,7 +122,7 @@ public class MainPanel extends JFrame {
             public void actionPerformed(ActionEvent event) {
             	try{
             		// open the file and read the data >> execute the query
-            		Scanner in = new Scanner(new FileReader("/Users/noirCynical/Workspace/DB_ComMa/query_histo.txt"));
+            		Scanner in = new Scanner(new FileReader("/Users/apple/Downloads/comma/query_histo.txt"));
             		String str= in.nextLine();
             		JDBC.executeInitiate(str);
             		System.out.println(str);
